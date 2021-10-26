@@ -1,0 +1,78 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>tablero4 - Alfredo Puerta</title>
+
+	<script>
+		//función que crea todos los elementos con los atributos acordados.
+		function iniciar() {
+			console.log('paso por iniciar');
+			for (j = 1; j < 9; j++) {
+				for (k = 1; k < 9; k++) {
+					var ele = crearCaja('div');
+					ele.id = 'caja' + j + k;
+					ele.innerHTML = 'H'; /* + j + k;*/ //debería ser 'C' + j + k;
+					ele.style.textAlign = 'top left'/*'center';*/
+					ele.style.cssFloat = 'left'; // css posicionamiento
+					ele.style.backgroundColor = 'rgb(' + numRandom() + ', ' + numRandom() + ', ' + numRandom() + ')'; //color en formato rgb
+					ele.style.width = '50px';
+					ele.style.height = '50px';
+					ele.style.margin = '4px';
+					ele.style.border = '1px solid black'
+					ele.addEventListener('click', clickCaja);
+				}
+				crearSalto();
+			}
+		}
+
+		//función que crea un salto de línea
+		function crearSalto(height) {
+			console.log('paso por crearSalto');
+			// div vacio sin dimensiones con clear left
+			var ele = document.createElement('div'); // crear nodo
+			ele.style.clear = 'left'; // css posicionamiento
+			document.body.appendChild(ele);	// añadir nodo al dom 
+		}
+
+		//función que crea los nodos (se le debe pasar el tipo de elemento que se pretende crear)
+		function crearCaja(tipo) {
+			console.log('paso por crearCaja');
+			var ele = document.createElement(tipo); // crea el objeto
+			document.body.appendChild(ele); // se añade el objeto al DOM como hijo de <body>
+			return ele;
+		}
+
+		//función que se ejecuta al hacer click en cualquiera de las cajas
+		function clickCaja() {
+			console.log('paso por clickCaja');
+
+			//recuperamos todos los <div> y los guardamos
+			var cajas = document.getElementsByTagName('div');
+
+			//recorremos los <div> y les cambiamos el color a todos de forma aleatoria llamando a la función 'numRandom()'
+			for(var i = 0; i < cajas.length; i++){
+				cajas[i].style.background = 'rgb(' + numRandom() + ', ' + numRandom() + ', ' + numRandom() + ')';
+			}
+
+			//finalmente, cambiamos el color a BLANCO para la caja en la que hacemos click
+			this.style.backgroundColor = 'white';
+		}
+
+		//función que devuelve un número random dentro de un rango
+		function numRandom(){
+			console.log('paso por numRandom');
+			return Math.floor(Math.random() * (255 - 0) + 0);
+		}
+
+		window.onload = iniciar; // sin parentesis , al final del head , inicio del js al carga la pagina
+	</script>
+
+</head>
+
+<body>
+</body>
+
+</html>

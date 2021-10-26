@@ -1,0 +1,80 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>tablero3 - Alfredo Puerta</title>
+
+	<script>
+		//función que crea todos los elementos con los atributos acordados.
+		function iniciar() {
+			console.log('paso por iniciar');
+			for (j = 1; j < 9; j++) {
+				for (k = 1; k < 9; k++) {
+					var ele = crearCaja('div');
+					ele.id = 'caja' + j + k;
+					ele.innerHTML = 'H' + j + k;
+					ele.style.textAlign = 'center';
+					ele.style.cssFloat = 'left'; // css posicionamiento
+					ele.style.backgroundColor = 'aqua';
+					ele.style.width = numRandom() + 'px';
+					ele.style.height = numRandom() + 'px';
+					ele.style.margin = '4px';
+					ele.style.border = '1px solid black'
+					ele.addEventListener('click', clickCaja);
+				}
+				crearSalto();
+			}
+		}
+
+		//función que crea un salto de línea
+		function crearSalto(height) {
+			console.log('paso por crearSalto');
+			// div vacio sin dimensiones con clear left
+			var ele = document.createElement('div'); // crear nodo
+			ele.style.clear = 'left'; // css posicionamiento
+			document.body.appendChild(ele);	// añadir nodo al dom 
+		}
+
+		//función que crea los nodos (se le debe pasar el tipo de elemento que se pretende crear)
+		function crearCaja(tipo) {
+			console.log('paso por crearCaja');
+			var ele = document.createElement(tipo); // crea el objeto
+			document.body.appendChild(ele); // se añade el objeto al DOM como hijo de <body>
+			return ele;
+		}
+
+		//función que se ejecuta al hacer click en cualquiera de las cajas
+		function clickCaja() {
+			console.log('paso por clickCaja');
+
+			if(this.id == 'caja88'){
+				//si la caja es la última, se recuperan todos los nodos <div> y se almacenan en un array.				
+				var cajas = document.getElementsByTagName('div');
+				//se recorre el array y se cambia el innerHTML de cada uno de los nodos por ''.
+				for(var i = 0; i < cajas.length; i++){
+					cajas[i].innerHTML = '';
+				}
+			} else {
+				//si no se trata de la última caja, se coje la id de la caja, se cambia 'caja' por 'C' y se declara como nuevo innerHTML
+				var nuevoInner = this.id.replace('caja','C');
+				this.innerHTML = nuevoInner; 
+			}
+		}
+
+		//función que devuelve un número random dentro de un rango
+		function numRandom(){
+			console.log('paso por numRandom');
+			return Math.floor(Math.random() * (100 - 25) + 25);
+		}
+
+		window.onload = iniciar; // sin parentesis , al final del head , inicio del js al carga la pagina
+	</script>
+
+</head>
+
+<body>
+</body>
+
+</html>

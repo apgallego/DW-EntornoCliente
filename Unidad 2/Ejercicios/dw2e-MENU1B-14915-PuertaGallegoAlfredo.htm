@@ -1,0 +1,105 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>menu1a - alfredoPuerta DW2E</title>
+
+	<script>
+
+        const numMenus = 20;
+        const texto = 'Lorem, ipsum dolor. Quasi, praesentium vero? Ex, et numquam. Perspiciatis, quo numquam. Corrupti, ullam possimus! Nisi, beatae maiores! Neque, odit repellendus! Asperiores, minima sint? Qui, minima ratione! Dolores, quia at? Doloremque, dignissimos dolor. Quaerat, temporibus magni. Dolor, fuga cumque? Est, nihil. Dolorem! Quam, magnam esse! Molestias, commodi rem! Asperiores, labore dolores? Possimus, voluptate quisquam. Dolores, neque laudantium? At, libero ex? Minima, molestiae quisquam? A, velit voluptate? Sed, laborum eius. Libero, perferendis excepturi? Quas, iusto velit. Error, suscipit doloremque! Suscipit, eos voluptas? Nemo, a facilis. Reprehenderit, harum quidem? Voluptatem, possimus nobis. Et, ut perspiciatis? Quibusdam, quae omnis! Labore, eercitationem sequi! Possimus, ipsam laboriosam? Veritatis, debitis? Tempora? Reprehenderit, sequi sed. Maiores, totam asperiores? Temporibus, quas voluptatibus. Laborum, qui et. Minus, laborum aperiam. Provident, modi culpa? Assumenda, porro fuga? Obcaecati, magni nemo! Rem, architecto quisquam. Nobis, doloribus a. At, ullam cumque. Magnam, blanditiis officia. Qui, excepturi nobis. Laborum, molestias eaque? Adipisci, amet dolores! Voluptatum, saepe recusandae? Doloribus, doloremque quaerat. Esse, fugit blanditiis! Labore, libero laudantium. Dignissimos, velit non? Nesciunt, perspiciatis ullam! Reprehenderit, reiciendis beatae. Impedit, incidunt alias! Hic, inventore doloremque. Expedita, voluptatum cum. Nisi, a velit. Qui, fuga perferendis! Vero, delectus eos. Esse, suscipit possimus? Minima, ipsum porro!';
+        
+        console.log(texto.length);
+		
+        function iniciar() {
+            console.log("paso por 'iniciar'");
+            //creamos el nodo para el element <p> en el DOM y un array para almacenar los futuros nodos para elementos <div> que necesitaremmos.
+            var nodoP = crearNodo('p');
+            var nodos = [];
+            
+            //bucle en el que crearemos tantos elementos <div> como valor tenga nuestraa variable 'numMenus', y le daremos propiedades.
+            //finalmente los nodos creados se almacenarán en el array instanciado anteriormente.
+            for(var i = 1; i <= numMenus; i++){
+                var nodoDiv = crearNodo('div');
+                nodoDiv.id = 'caja' + i;
+                nodoDiv.style.width = '100px';
+                nodoDiv.style.height = '20px';
+                nodoDiv.style.border = '1px solid black';
+                nodoDiv.innerHTML = 'menu ' + i;
+                nodoDiv.style.textAlign = 'center';
+                nodoDiv.style.float = 'left';
+                nodoDiv.addEventListener('mouseenter', entraRaton);          
+                nodoDiv.addEventListener('mouseout', saleRaton);          
+                nodoDiv.addEventListener('click', clickMenu);
+                nodos.push(nodoDiv);
+            }
+            
+            console.log(nodos);
+        }
+
+        //función para crear nodos de culquier tipo y generarlos como hijos de <body>
+        function crearNodo(tipo){
+            console.log("paso por 'crearNodo'");
+            var nodo = document.createElement(tipo);
+            document.body.appendChild(nodo);
+            return nodo;
+        }
+
+        //función que detecta cuándo el ratón pasa por encima de los <div> creados y cambia ciertos propiedades de estilo.
+        function entraRaton(){
+            console.log("paso por 'entraRaton'");
+            this.style.backgroundColor = '#555';
+            this.style.cursor = 'pointer';
+        }
+
+        //función que, como la anterior, canbia propiedades de estilo de los <div>, esta vez cuando el ratón está fuera de estos.
+        //junto con la anterior, se simula un efecto ':hover', propio de CSS.
+        function saleRaton(){
+            console.log("paso por 'saleRaton'");
+            this.style.backgroundColor = '';
+        }
+
+        //funciçon que detecta cuándo el usuario hace click en los <div> y crea / cambia propiedades según el condicional implementado.
+        function clickMenu(){
+            console.log("paso por 'clickMenu'");
+            if(!document.getElementById('texto')){
+                //si no hay un elemento <p>, se crea uno y se le aplican las propiedades después.
+                nodoP = crearNodo('p');
+            } else {
+                //si el elemento <p> ya existe, se le cambian las propiedades directamente.
+                nodoP = document.getElementById('texto');
+            }
+
+            //se le quita la apropiedad 'float', y en el texto se le añade el nombre de menú correspondiente junto con un textoa aleatorio de una longitud predeterminada.
+            nodoP.style.clear = 'both';
+            nodoP.id = 'texto';
+            nodoP.innerHTML = '<b>' + this.innerHTML + '</b><br/>' + textoAleatorio() + '<br/>';
+        }
+
+        //función que genera el texto predeterminado que necesitamos para nuestro nodo <p>.
+        function textoAleatorio(){
+            console.log("paso por 'textoAleatorio'");
+            //llama a la función 'numAleatorio()' para generar un número aleatorio por el que empiece la función 'substring' y recoja partes aleatorias del texto proporcionado.
+            var fragTexto = texto.substr(numAleatorio(1, 20), 240);
+            console.log(fragTexto.length);
+            return fragTexto;
+        }
+
+        //función que nos devuelve un número aleatorio entre el máximo y el mínimo proporcionados.
+        function numAleatorio(max, min){
+            console.log("paso por 'numAleatorio'");
+            return Math.floor(Math.random() * ((max + 1) - min) + min);
+        }
+
+        //cuando carga toda la página web, la función 'iniciar()' se ejecuta.
+        window.onload = iniciar;
+	</script>
+
+</head>
+
+<body>
+</body>
+
+</html>

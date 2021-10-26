@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>tablero1</title>
+<style>
+    body{
+        position: relative; 
+        left: 35%;
+    }
+</style>
+
+<script>
+
+function iniciar(){
+
+    alert("Hay cierta cantidad de casillas trucadas, prueba tu suerte.");
+    console.log('paso por iniciar');
+    for (j=1;j<9;j++){
+        for (k=1;k<9;k++){
+            var random =randomNumber(0,16);        // valor aleatorio cada vez que se repita el bucle
+            if(random < 6){                      // if  para crear casillas "bomba" con id Bxx y casillas seguras con id Cxx
+                crearCaja(50,50,'lightgray','B'+k+j);
+                }else{
+                crearCaja(50,50,'lightgray','C'+k+j);
+                }    
+        }
+        crearSalto();        
+    }
+    /*var rand = randomNumber(8,32);
+    var randCoor1;
+    var randCoor2;
+    var avoidRep = [];
+    var ele;
+    
+        for(let i=0; i<rand;i++){
+            randCoor1 = randomNumber(1,8);
+            randCoor2 = randomNumber(1,8);
+            avoidRep.push('C'+randCoor1+randCoor2);
+            for(let j=0;j<avoidRep.length;j++){
+                if(avoidRep[j] != 'C'+randCoor1+randCoor2){
+                ele = document.getElementById('C'+randCoor1+randCoor2).id;
+                ele.id =('B'+randCoor1+randCoor2);
+                avoidRep.push('C'+randCoor1+randCoor2);
+                }else{
+                    ele = document.getElementById('C'+(randCoor1+1)+randCoor2).id;
+                    ele.id =('B'+(randCoor1+1)+randCoor2);
+                    avoidRep.push ('C'+(randCoor1+1)+randCoor2);
+            }
+            }
+        }*/
+}
+
+function crearSalto(height){
+    // div vacio sin dimensiones con clear left
+    var ele=document.createElement('div'); // crear nodo
+    ele.style.clear = 'left'; // css posicionamiento
+    document.body.appendChild(ele);    // añadir nodo al dom 
+}
+function crearCaja(width,height,color,id){
+    var ele = document.createElement('div'); // crear objeto
+    ele.id=id;
+    ele.style.cssFloat = 'left'; // css posicionamiento
+    ele.style.backgroundColor = color;
+    ele.style.width= width + 'px';
+    ele.style.height = height + 'px';
+    ele.style.margin = '4px';
+    ele.style.border = '1px solid black'
+    ele.addEventListener('click',clickCaja);
+    document.body.appendChild(ele); // anadir nodo al body
+}
+function clickCaja(){
+            if(/B/.test(this.id) == true){
+                this.style.backgroundColor = 'red';
+                var eles = document.getElementsByTagName('div');
+                for(let ele of eles){
+                    ele.style.backgroundColor = 'red';
+                }
+                alert('Has perdido...');
+            }else{
+                this.style.backgroundColor = 'white';
+            }
+}
+
+function randomNumber(min,max){                       // Función que devuelve un número aleatorio entre un rango
+    return Math.floor(Math.random()* max) + min;
+}
+window.onload = iniciar; // sin parentesis , al final del head , inicio del js al carga la pagina
+</script>
+
+</head>
+ 
+<body>
+</body>
+</html>

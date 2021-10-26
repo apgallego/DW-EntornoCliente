@@ -1,0 +1,157 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>listas - alfredoPuerta DW2E</title>
+
+    <h1>ejemplos de metodos de array</h1>
+    <p id="result"></p>
+
+	<script>
+        //array con los números del ejemplo
+        // var numsRandom = [428, 38, 222, 749, 579, 716, 404, 29, 529, 457];
+        var numsRandom = [];
+        var resultado = '';
+        var max = 1000, min = 0; 
+
+        function iniciar(){
+            //rellenamos el array con 10 números aleatorios entre 0 y 1000 (comentarlo en caso de querer testear con los valores del ejemplo)
+            for(let i = 0; i <= 10; i++){
+                numsRandom.push(numAleatorio(max, min));
+            }
+
+            //guardamos los resultados llamando a las distintas funciones
+            resultado += imprimirLista();
+            resultado += imprimirAscendente();
+            resultado += imprimirDescendente();
+            resultado += imprimirMedia1();
+            resultado += imprimirMedia2();
+            resultado += imprimirMedia3();
+            resultado += imprimirMaxApply();
+            resultado += imprimirMinApply();
+            resultado += imprimirMaxSort();
+            resultado += imprimirMinSort();
+            resultado += imprimirSumaReduce();
+            resultado += imprimirFiltro();
+
+            document.getElementById('result').innerHTML = resultado;
+        }
+
+        function imprimirLista(){
+            //Imprimimos por pantalla la lista (CON COMAS)
+            console.log('paso por imprimirLista');
+            return 'lista: ' + numsRandom + '<br/>';
+        }
+
+        function imprimirAscendente(){
+            //Imprimimos de forma ascendente (CON ESPACIOS)
+            console.log('paso por imprimirAscendente');
+            var numsAscendente = numsRandom.sort(function(a, b) {return a - b}).join(" ");
+            return 'ascendente: ' + numsAscendente + '<br/>';
+        }
+
+        function imprimirDescendente(){
+            //Imprimimos de forma descendente (CON COMAS)
+            console.log('paso por imprimirDescendente');
+            var numsDescendente = numsRandom.sort(function(a, b) {return a - b}).reverse();
+            return 'descendente: ' + numsDescendente + '<br/>';    
+        }
+
+        function imprimirMedia1(){
+            //Imprimimos media (reduce())
+            console.log('paso por imprimirMedia1');
+            var numsMediaReduce = numsRandom.reduce(totalArr, 0);
+            return 'media reduce: ' + (numsMediaReduce / numsRandom.length).toFixed(1) + '<br/>';
+        }
+
+        function imprimirMedia2(){
+            //Imprimimos media (suma / elementos)
+            console.log('paso por imprimirMedia2');
+            var suma = 0, elems = 0, result = 0;
+            for(let i = 0; i < numsRandom.length; i++){
+                suma += numsRandom[i];
+                elems++;
+            }
+            result = suma / elems;
+            return 'media suma/elementos: ' + result.toFixed(1) + '<br/>';
+        }
+
+        function imprimirMedia3(){
+            //Imprimimos media (reduce()) de forma abreviada
+            console.log('paso por imprimirMedia3');
+            var numsMediaReduceAbr = numsRandom.reduce(function(total, elem){return total + elem}, 0);
+            return 'media reduce abreviado: ' + (numsMediaReduceAbr / numsRandom.length).toFixed(1) + '<br/>';
+        }
+
+        function imprimirMaxApply(){
+            //Imprimimos el máximo (apply())
+            console.log('paso por imprimirMaxApply');
+            var numsMaxApply = Math.max.apply(null, numsRandom);
+            return 'maximo apply: ' + numsMaxApply + '<br/>';
+        }
+
+        function imprimirMinApply(){
+            //Imprimimos el mínimo (apply())
+            console.log('paso por imprimirMinApply');
+            var numsMinApply = Math.min.apply(null, numsRandom);
+            return 'minimo apply: ' + numsMinApply + '<br/>';
+        }
+
+        function imprimirMaxSort(){
+            //Imprimimos el máximo (sort())
+            console.log('paso por imprimirMaxSort');
+            var numsMaxSort = numsRandom.sort(function(a, b){return b - a})[0];
+            // var numsMaxSort = numsRandom.sort(function(a, b){return a - b}).reverse()[0]; //hace lo mismo
+            return 'maximo sort: ' + numsMaxSort + '<br/>';
+        }
+
+        function imprimirMinSort(){
+            //Imprimimos el mínimo (sort())
+            console.log('paso por imprimirMinSort');
+            /*tal y como se muestra en el ejemplo, el método sort(), está ordenando los elementos del array como cadenas y no como enteros,
+            por lo que no habrá que añadirle la función para la ordenación de números a dicho método*/
+            var numsMinSort = numsRandom.sort()[0];
+            return 'minimo sort: ' + numsMinSort + '<br/>';
+        }
+
+        function imprimirSumaReduce(){
+            //Imprimimos la suma (reduce())
+            console.log('paso por imprimirSumaReduce');
+            return 'suma reduce: ' + numsRandom.reduce(totalArr, 0) + '<br/>';
+        }
+
+        function imprimirFiltro(){
+            //Imprimimos filas entre0 y 100 (CON ESPACIOS)
+            console.log('paso por imprimirFiltro');
+            var numsFiltro = numsRandom.filter(function(num){
+                if(num >= 0 && num <= 100){return num}
+            });
+            return 'filtra entre 0 y 100: ' + numsFiltro.join(' ') + '<br/>';
+        }
+
+        //**FUNCIONES EXTRAS**
+        //función para generar números aleatrios entre (max) y (min).
+        function numAleatorio(max, min){
+			return Math.round(Math.random() * (max - min) + min);
+		}
+
+        //función para sumar todos los elementos del un array.
+        function totalArr(){
+            var total = 0;
+            for(let i = 0; i < numsRandom.length; i++){
+                total += numsRandom[i];
+            }
+            return total;
+        }
+
+        window.onload = iniciar;
+	</script>
+
+</head>
+
+<body>
+</body>
+
+</html>

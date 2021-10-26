@@ -1,0 +1,90 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>menu1a - alfredoPuerta DW2E</title>
+
+	<script>
+
+        const numMenu = 3;
+        const texto = 'Lorem, ipsum dolor. Quasi, praesentium vero? Ex, et numquam. Perspiciatis, quo numquam. Corrupti, ullam possimus! Nisi, beatae maiores! Neque, odit repellendus! Asperiores, minima sint? Qui, minima ratione! Dolores, quia at? Doloremque, dignissimos dolor. Quaerat, temporibus magni. Dolor, fuga cumque? Est, nihil. Dolorem! Quam, magnam esse! Molestias, commodi rem! Asperiores, labore dolores? Possimus, voluptate quisquam. Dolores, neque laudantium? At, libero ex? Minima, molestiae quisquam? A, velit voluptate? Sed, laborum eius. Libero, perferendis excepturi? Quas, iusto velit. Error, suscipit doloremque! Suscipit, eos voluptas? Nemo, a facilis. Reprehenderit, harum quidem? Voluptatem, possimus nobis. Et, ut perspiciatis? Quibusdam, quae omnis! Labore, eercitationem sequi! Possimus, ipsam laboriosam? Veritatis, debitis? Tempora? Reprehenderit, sequi sed. Maiores, totam asperiores? Temporibus, quas voluptatibus. Laborum, qui et. Minus, laborum aperiam. Provident, modi culpa? Assumenda, porro fuga? Obcaecati, magni nemo! Rem, architecto quisquam. Nobis, doloribus a. At, ullam cumque. Magnam, blanditiis officia. Qui, excepturi nobis. Laborum, molestias eaque? Adipisci, amet dolores! Voluptatum, saepe recusandae? Doloribus, doloremque quaerat. Esse, fugit blanditiis! Labore, libero laudantium. Dignissimos, velit non? Nesciunt, perspiciatis ullam! Reprehenderit, reiciendis beatae. Impedit, incidunt alias! Hic, inventore doloremque. Expedita, voluptatum cum. Nisi, a velit. Qui, fuga perferendis! Vero, delectus eos. Esse, suscipit possimus? Minima, ipsum porro!';
+        // console.log(texto.length);
+
+		function iniciar() {
+            console.log("paso por 'iniciar'");
+            //creamos los nodos en el DOM
+            // var nodoDiv = crearNodo('div');
+            var nodoP = crearNodo('p');
+            var nodos = [];
+            
+            for(var i = 1; i <= numMenu; i++){
+                var nodoDiv = crearNodo('div');
+                nodoDiv.id = 'caja' + i;
+                nodoDiv.style.width = '100px';
+                nodoDiv.style.height = '20px';
+                nodoDiv.style.border = '1px solid black';
+                nodoDiv.innerHTML = 'menu ' + i;
+                nodoDiv.style.textAlign = 'center';
+                nodoDiv.style.float = 'left';
+                nodoDiv.addEventListener('mouseenter', entraRaton);          
+                nodoDiv.addEventListener('mouseout', saleRaton);          
+                nodoDiv.addEventListener('click', clickMenu);
+                nodos.push(nodoDiv);
+            }
+
+            console.log(nodos);
+        }
+
+        function crearNodo(tipo){
+            console.log("paso por 'crearNodo'");
+            var nodo = document.createElement(tipo);
+            document.body.appendChild(nodo);
+            return nodo;
+        }
+
+        function entraRaton(){
+            console.log("paso por 'entraRaton'");
+            this.style.backgroundColor = '#555';
+            this.style.cursor = 'pointer';
+        }
+
+        function saleRaton(){
+            console.log("paso por 'saleRaton'");
+            this.style.backgroundColor = '';
+        }
+
+        function clickMenu(){
+            console.log("paso por 'clickMenu'");
+            if(!document.getElementById('texto')){
+                nodoP = crearNodo('p');
+            } else {
+                nodoP = document.getElementById('texto');
+            }
+            nodoP.style.clear = 'both';
+            nodoP.id = 'texto';
+            nodoP.innerHTML = '<b>' + this.innerHTML + '</b><br/>' + textoAleatorio() + '<br/>';
+        }
+
+        function textoAleatorio(){
+            console.log("paso por 'textoAleatorio'");
+            var fragTexto = texto.substr(numAleatorio(1, 20), 80);
+            console.log(fragTexto.length);
+            return fragTexto;
+        }
+
+        function numAleatorio(max, min){
+            console.log("paso por 'numAleatorio'");
+            return Math.floor(Math.random() * ((max + 1) - min) + min);
+        }
+
+        window.onload = iniciar;
+	</script>
+
+</head>
+
+<body>
+</body>
+
+</html>

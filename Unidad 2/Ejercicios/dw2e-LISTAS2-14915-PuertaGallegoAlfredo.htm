@@ -1,0 +1,184 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>listas2 - alfredoPuerta DW2E</title>
+
+    <h1>ejemplos de metodos de array</h1>
+    <p id="result"></p>
+
+	<script>
+        const txt = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+        var arrElems = [];
+        var resultado = '';
+
+        function iniciar(){ 
+            //rellenamos el array con 10 números aleatorios entre 0 y 1000 (comentarlo en caso de querer testear con los valores del ejemplo)
+            for(let i = 0; i <= 10; i++){
+                const obj = {color: colorAleatorio(), texto: textoAleatorio(), nivel: nivel(), version: numAleatorio(0, 9)};
+                arrElems.push(obj);
+            }
+
+            console.log(arrElems);
+
+            // // guardamos los resultados llamando a las distintas funciones
+            // resultado += imprimirLista();
+            // resultado += imprimirAscendente();
+            // resultado += imprimirDescendente();
+            // resultado += imprimirMedia1();
+            // resultado += imprimirMedia2();
+            // resultado += imprimirMedia3();
+            // resultado += imprimirMaxApply();
+            // resultado += imprimirMinApply();
+            // resultado += imprimirMaxSort();
+            // resultado += imprimirMinSort();
+            // resultado += imprimirSumaReduce();
+            // resultado += imprimirFiltro();
+
+            document.getElementById('result').innerHTML = resultado;
+        }
+
+        function imprimirNombresValores(){
+            //Imprimimos por pantalla la lista de nombres y valores del primer objeto (CON COMAS)
+            console.log('paso por imprimirLista');
+            return 'lista: ' + arrElems + '<br/>';
+        }
+
+        function imprimirAscendente(){
+            //Imprimimos de forma ascendente (CON ESPACIOS)
+            console.log('paso por imprimirAscendente');
+            var numsAscendente = arrElems.sort(function(a, b) {return a - b}).join(" ");
+            return 'ascendente: ' + numsAscendente + '<br/>';
+        }
+
+        function imprimirDescendente(){
+            //Imprimimos de forma descendente (CON COMAS)
+            console.log('paso por imprimirDescendente');
+            var numsDescendente = arrElems.sort(function(a, b) {return a - b}).reverse();
+            return 'descendente: ' + numsDescendente + '<br/>';    
+        }
+
+        function imprimirMedia1(){
+            //Imprimimos media (reduce())
+            console.log('paso por imprimirMedia1');
+            var numsMediaReduce = arrElems.reduce(totalArr, 0);
+            return 'media reduce: ' + (numsMediaReduce / arrElems.length).toFixed(1) + '<br/>';
+        }
+
+        function imprimirMedia2(){
+            //Imprimimos media (suma / elementos)
+            console.log('paso por imprimirMedia2');
+            var suma = 0, elems = 0, result = 0;
+            for(let i = 0; i < arrElems.length; i++){
+                suma += arrElems[i];
+                elems++;
+            }
+            result = suma / elems;
+            return 'media suma/elementos: ' + result.toFixed(1) + '<br/>';
+        }
+
+        function imprimirMedia3(){
+            //Imprimimos media (reduce()) de forma abreviada
+            console.log('paso por imprimirMedia3');
+            var numsMediaReduceAbr = arrElems.reduce(function(total, elem){return total + elem}, 0);
+            return 'media reduce abreviado: ' + (numsMediaReduceAbr / arrElems.length).toFixed(1) + '<br/>';
+        }
+
+        function imprimirMaxApply(){
+            //Imprimimos el máximo (apply())
+            console.log('paso por imprimirMaxApply');
+            var numsMaxApply = Math.max.apply(null, arrElems);
+            return 'maximo apply: ' + numsMaxApply + '<br/>';
+        }
+
+        function imprimirMinApply(){
+            //Imprimimos el mínimo (apply())
+            console.log('paso por imprimirMinApply');
+            var numsMinApply = Math.min.apply(null, arrElems);
+            return 'minimo apply: ' + numsMinApply + '<br/>';
+        }
+
+        function imprimirMaxSort(){
+            //Imprimimos el máximo (sort())
+            console.log('paso por imprimirMaxSort');
+            var numsMaxSort = arrElems.sort(function(a, b){return b - a})[0];
+            // var numsMaxSort = numsRandom.sort(function(a, b){return a - b}).reverse()[0]; //hace lo mismo
+            return 'maximo sort: ' + numsMaxSort + '<br/>';
+        }
+
+        function imprimirMinSort(){
+            //Imprimimos el mínimo (sort())
+            console.log('paso por imprimirMinSort');
+            /*tal y como se muestra en el ejemplo, el método sort(), está ordenando los elementos del array como cadenas y no como enteros,
+            por lo que no habrá que añadirle la función para la ordenación de números a dicho método*/
+            var numsMinSort = arrElems.sort()[0];
+            return 'minimo sort: ' + numsMinSort + '<br/>';
+        }
+
+        function imprimirSumaReduce(){
+            //Imprimimos la suma (reduce())
+            console.log('paso por imprimirSumaReduce');
+            return 'suma reduce: ' + arrElems.reduce(totalArr, 0) + '<br/>';
+        }
+
+        function imprimirFiltro(){
+            //Imprimimos filas entre0 y 100 (CON ESPACIOS)
+            console.log('paso por imprimirFiltro');
+            var numsFiltro = arrElems.filter(function(num){
+                if(num >= 0 && num <= 100){return num}
+            });
+            return 'filtra entre 0 y 100: ' + numsFiltro.join(' ') + '<br/>';
+        }
+
+        //**FUNCIONES EXTRAS**
+        //función para generar números aleatrios entre (max) y (min).
+        function numAleatorio(max, min){
+			return Math.round(Math.random() * (max - min) + min);
+		}
+
+        //función para declarar un color aleatorio en hexadecimal.
+        function colorAleatorio(){
+            // pasar a hexadecimal como cadena
+            var r = numAleatorio(0,255).toString(16); 
+            var g = numAleatorio(0,255).toString(16);  
+            var b = numAleatorio(0,255).toString(16);
+
+            if(r.length == 1){r = '0' + r;}
+            if(g.length == 1){g = '0' + g;}
+            if(b.length == 1){b = '0' + b;}
+
+            console.log(r,g,b);
+            return '#'+r+g+b; // color en css tres hexadecimales
+        }
+
+        //función que devuelve un fragmento de texto aleatorio.
+        function textoAleatorio(){
+            return txt.substring(numAleatorio(0, 10), numAleatorio(1, 10));
+        }
+
+        //función que devuelve un nivel (A, B o C).
+        function nivel(){
+            var niveles = ['A', 'B', 'C'];
+            return niveles[numAleatorio(0, 2)];
+        }
+
+        // //función para sumar todos los elementos del un array.
+        // function totalArr(){
+        //     var total = 0;
+        //     for(let i = 0; i < arrElems.length; i++){
+        //         total += arrElems[i];
+        //     }
+        //     return total;
+        // }
+
+        window.onload = iniciar;
+	</script>
+
+</head>
+
+<body>
+</body>
+
+</html>

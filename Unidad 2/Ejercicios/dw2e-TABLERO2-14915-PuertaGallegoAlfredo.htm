@@ -1,0 +1,68 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>tablero2 - alfredoPuerta DW2E</title>
+
+	<script>
+
+        const numCasillas = 8;
+        
+        function iniciar() {
+            console.log("paso por 'iniciar'");
+            var nodoPadre = crearNodo('div', 'body');
+            
+            for(var i = 0; i <= numCasillas; i++){
+                for(var j = 1; j <= numCasillas; j++){
+                    var nodoDiv = crearNodo('div', 'div');
+                    nodoDiv.id = 'caja ' + j + i; //**su id será 'caja ' + su posición correspondiente en filas y columnas.
+                    nodoDiv.style.width = '60px'; //le damos dimensiones a los nodos, tanto en anchura como en altura (debajo).
+                    nodoDiv.style.height = '60px';
+                    nodoDiv.style.border = '1px solid black'; //le aplicamos un borde.
+                    nodoDiv.innerHTML = 'H'; //el texto que contendrán los nodos será su posición en filas y columnas.
+                    nodoDiv.style.textAlign = 'top left'; //alineamos el texto anterior.
+                    nodoDiv.style.backgroundColor = 'aqua'; //le aplicamos color a los nodos.
+                    nodoDiv.style.margin='4px'; //aplicamos un margen para separarlos.
+                    nodoDiv.style.display = 'inline-flex'; //aplicamos también un layout de bloque.
+                    nodoDiv.style.position = 'static'; //aplicamos también un layout de bloque.
+                    nodoDiv.addEventListener('click', clickMenu); //añadimos un 'escuchador' para cuando que se ejecute una acción ('clickMenu()') cuando el usuario haga click en cualquiera de los nodos
+                }
+                document.write('<br/>'); //separamos las filas con un retorno de carro cada vez que se crean 8 nodos.
+            }
+        }
+
+        //función para crear nodos de culquier tipo y generarlos como hijos de <body>.
+        function crearNodo(tipo, padre){
+            console.log("paso por 'crearNodo'");
+            var nodo = document.createElement(tipo);
+            document.body.appendChild(nodo);
+            return nodo;
+        }
+
+        //función que despliega una alerta al hacer click en cualquiera de los nodos creados.
+        function clickMenu(){   
+            console.log("paso por 'clickMenu'");
+
+            if(this.id == 'caja 88'){
+                var nodosRecibidos = document.getElementsByTagName('div');
+                for(var i = 0; i < nodosRecibidos.length; i++){
+                    nodosRecibidos[i].innerHTML = '';
+                }
+            } else {
+                this.innerHTML = this.id; //**devolvemos la id del nodo que llama a la función, ya que esta será 'caja ' junto con la posición del nodo tanto en filas como en columnas.
+            }
+
+        }
+
+        //cuando carga toda la página web, la función 'iniciar()' se ejecuta.
+        window.onload = iniciar;
+	</script>
+
+</head>
+
+<body>
+</body>
+
+</html>

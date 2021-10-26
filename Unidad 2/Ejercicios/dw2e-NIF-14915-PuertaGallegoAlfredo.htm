@@ -1,0 +1,42 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>nif - alfredoPuerta DW2E</title>
+</head>
+
+<body>
+    <p id="result">Texto de ejemplo</p>
+	
+    <script>
+        var texto = document.getElementById('result');
+
+        try{
+            console.log('1');
+            var numero = prompt('Escribe el número: ');
+            var letra = prompt('Escribe la letra: ');
+
+            console.log('2');
+            //si el número no es un entero o su longitud es distinta de 8, lanzamos una excepción.
+            if(isNaN(numero) || numero.length != 8){
+                throw "El número tiene que ser un conjunto de 8 dígitos enteros.";
+                console.log('2.1');
+            //si la longitud de la letra es distinta de 1 o si la letra resulta ser un número, lanzamos otra excepción.
+            } else if (letra.length != 1  || !isNaN(parseInt(letra))){
+                throw "La letra debe ser un solo caracter (números no son válidos).";
+                console.log('2.2');                
+            }
+            texto.innerHTML = 'número: ' + numero + '<br/>letra: ' + letra;
+        } catch (err){
+            console.log('3');
+            texto.innerHTML = '' + err;
+        } finally {
+            console.log('4');
+            document.write('NOTA: no se deben hacer los ejercicios con popups.');
+        }
+	</script>
+</body>
+
+</html>
