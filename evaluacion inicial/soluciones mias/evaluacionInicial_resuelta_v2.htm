@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8" />
+    </head>
+
+    <body>
+        <p id="result"></p>
+        <script>
+             //pedimos al usuario las dimensiones
+             var alto = prompt("Indique la altura: ");
+            var ancho = prompt("Indique el ancho: ");
+            var fondo = prompt("Indique el fondo: ");
+
+            //calculamos la superficie y el volumen con los datos recibidos
+            var superficie = fondo * ancho;
+            var volumen = fondo * ancho * alto;
+            
+            //convertimos los datos anterioresa pies
+            var superficiePies = superficie * 3.28;
+            var volumenPies = volumen * 3.28;
+
+            //agrupamos todos los datos en una variable y la devolvemos a la etiqueta <p>
+            var result = "alto = " + alto + "<br/>ancho = " + ancho + "<br/>fondo = " + fondo + "<br/>superficie = " + superficie + " ( " + superficiePies.toFixed(2) + " pies )" + "<br/>volumen = " + volumen + " ( " + volumenPies.toFixed(2) + " pies )";
+            document.getElementById("result").innerHTML = result;
+            //document.getElementById("result").innerText = result; --> hace lo mismo
+        </script>
+    </body>
+</html>

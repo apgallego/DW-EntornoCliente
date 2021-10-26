@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        <script type="text/javascript">
+            //pedimos el alto al usuario
+            var altura = prompt("Indica la altura:")
+            document.write("alto = " + altura);
+
+            //pedimos el ancho al usuario
+            var anchura = prompt("Indica la anchura: ");
+            document.write("<br/>ancho = " + anchura);
+
+            //pedimos el fondo al usuario
+            var fondo = prompt("<br/>Indica el fondo: ");
+            document.write("<br/>volumen = " + fondo);
+
+            //calculamos la superficie y el volumen
+            var superficie = anchura * fondo;
+            var volumen = altura * anchura * fondo;
+
+            //convertimos los resultados anteriores a pies
+            var superficiePies = superficie * 10.7639;
+            var volumenPies = volumen * 35.3147;
+
+            document.write("<br/>superficie = " + superficie + " ( " + superficiePies.toFixed(2) + " pies )");
+            document.write("<br/>volumen = " + volumen + " ( " + volumenPies.toFixed(2) + " pies )");
+        </script>
+    </body>
+</html>

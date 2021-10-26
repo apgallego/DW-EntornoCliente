@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>ejercicio-C-madrid-2011</title>
+
+</head>
+ 
+<body>
+
+<!-- <input type="file" id="file-input" /> -->
+
+<script type="text/javascript">
+
+/*
+	***PREMISAS***
+	- Asumimos que "rellenar con 0s" implica que si el código contiene menos de, por ejemplo, 8 dígitos, se rellenará con 0s hasta que sea un código válido
+*/
+
+var entrada = [
+		65839522,
+		65839521,
+		8414533043847,
+		5029365779425,
+		5129365779425,
+		0
+	];
+
+var codigos = entrada.slice(0, entrada.length - 1);
+
+function imprimirResultado(entrada){
+	document.write("<b>entrada<b/><br/><br/>");
+
+	var resultImpreso = "";
+	
+	for(let i = 0; i < entrada.length; i++){
+		resultImpreso += entrada[i] + "<br/>";
+	}
+
+	document.write(resultImpreso);
+}
+
+// var codigo = entrada.slice(0, entrada.length - 1);
+
+// function procesar(entrada, codigo){
+// 	document.write("<b>entrada</b><br/><br/>");
+// 	imprimirEntrada(entrada);
+
+// 	if(codigo[entrada.length] == 0){
+// 		for(let i = 0; i < entrada.length; i++){
+// 			tipoCodigo(entrada[i]);
+// 			checkCodigo(entrada[i]);
+// 		}
+// 	} else {
+// 		document.write("Entrada incorrecta");
+// 		return;
+// 	}
+
+// 	document.write("<b>salida</b><br/><br/>");
+// }
+
+// function imprimirEntrada(entrada){
+// 	var entradaImpresa = "";
+
+// 	for(let i = 0; i < entrada.length; i++){
+// 		entradaImpresa += entrada[i] + "<br/>";
+// 	}
+
+// 	document.write(entradaImpresa);
+// }
+
+// function tipoCodigo(codigo){
+// 	var tipoCod;
+
+// 	for(let i = 0; i < codigo.length; i++){
+// 		if(codigo.length <= 8){
+// 			while(codigo.length < 8){codigo.push(0)};
+// 			tipoCod = "EAN-8";
+// 		} else if(codigo.length > 8 && codigo.length <= 13){
+// 			while(codigo.length < 13){};
+// 			entrada.push(0);
+// 			tipoCod = "EAN-13";
+// 		} else {
+// 			tipoCod = "Desconocido";
+// 		}
+// 	}
+// }
+
+// function checkCodigo(codigo){
+// 	var codigoNoDigito = codigo.slice(0, codigo.length - 1);
+// 	var result = 0;
+// 	var digitoEsperado;
+
+// 	for(let i = codigoNoDigito.length - 1; i >= 0; i--){
+// 		if(i % 2 == 0){codigoNoDigito *= 3;}
+// 		//else {codigoNoDigito *= 1;} // --> Línea prescindible
+// 		result += codigoNoDigito[i];
+// 	}
+
+// 	var resultAux = result, inx = 0;
+
+// 	if(result % 10 != 0){
+// 		while(resultAux % 10 != 0){
+// 			i++;
+// 			resultAux += inx;
+// 		}
+
+// 		digitoEsperado = inx;
+// 	} else {
+// 		digitoEsperado = 0;
+// 	}
+// }
+
+// procesar();
+
+</script>	
+
+<p id="salida"></p>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+D,0,A,0,M,0,I,0,C,0,N,O
+D,1,A,1,M,1,I,1,C,1,N,0
+D,100,A,100,M,100,I,100,C,100,N,0
+D,1,A,1,M,1,I,1,C,1,N,1
+D,100,A,100,M,100,I,100,C,100,N,100
+D,1,A,1,M,2,I,1,C,1,N,0
+D,1,A,1,M,1,I,0,C,1,N,0
+D,2,A,1,M,2,I,1,D,1,C,0,I,1,D,1,N,0
+D,15.33,A,60,M,12,I,25,N,0
+D,2,A,1,I,1,D,1,I,1,D,1,N,0
+D,1,A,1,M,1,I,1,C,1,N,-1
+D,-1,A,1,M,1,I,1,C,1,N,0
+D,D,A,1,M,2,I,I,C,1,N,0
+D,D,A,A,M,M,I,I,C,C,N,0
+D,D,A,A,M,M,I,I,C,C,E,E
+
+*****BORRAR EN CASO DE QUERER COMPROBAR EL FUNCIONAMIENTO*****
+
+-- Cada caso (línea) se ha probado como si fuera 1 solo día (sustituyendo la "N" por "E") y luego en conjunto (donde la única letra "E" se encuentra en el último caso).
+-- Los asteríscos frente a los números indican qué tan rebuscados son los casos de prueba.
+
+1. Se pretende comprobar el funcionamiento del algoritmo en caso de no haber ni una sola venta en todo un día
+    SALIDA --> EMPATE#EMPATE#NO -- FUNCIONA
+
+2. y 3. Se pretende comprobar el funcionamiento del algoritmo en caso de un mismo número de ventas.
+    SALIDA --> EMPATE#EMPATE#NO -- FUNCIONA
+
+4. y 5. Se pretende comprobar lo mismo que los 2 casos anteriores, pero esta vez añadiendo un entero distinto a 0 en la "E" (que supone el fin del día, y con ello del registro).
+    SALIDA --> EMPATE#EMPATE#NO -- FUNCIONA
+
+6. Se pretende comprobar si el algoritmo consigue manejar el caso en el que haya un número de ventas mayor al de los demás.
+    SALIDA --> MERIENDA#EMPATE#NO -- FUNCIONA
+
+7. Se pretende comprobar si el algoritmo consigue manejar el caso en el que haya un número de ventas menor al de los demás.
+    SALIDA --> EMPATE#CENAS#NO -- FUNCIONA
+
+8. Se pretende comprobar si el algoritmo soporta la entrada repetida de datos.
+    SALIDA --> DESAYUNO#COPAS#NO -- FUNCIONA
+
+9. Se pretende comprobar si el algoritmo maneja correctamente el caso en el que las comidas superan a la media de las ventas (además, se utilizan números decimales).
+    SALIDA --> COMIDA#COPAS#SI -- FUNCIONA
+
+10. Se pretende comprobar el funcionamiento del algoritmo en caso de un registro con ciertas categorías sin añadir.
+    SALIDA --> DESAYUNO#EMPATE#NO -- FUNCIONA
+
+*11. Se pretende comprobar si, en un caso excepcional, el valor que obtiene la "N" (fin del registro) o la "E" (fin del registro y del día) es negativo.
+    SALIDA --> EMPATE#EMPATE#NO -- FUNCIONA
+
+*12. Se pretende comprobar si, de nuevo, en un caso excepcional, el valor que obtiene cualquiera de las categorías del algoritmo (menos "N" y "E") es negativo.
+    SALIDA --> EMPATE#DESAYUNO#NO -- FUNCIONA PERO INCORRECTAMENTE: se debería tratar este caso con una excepción, ya que no pueden haber ventas negativas.
+
+**13. Se pretende comprobar qué pasaría si alguno de los valores se confunde con las letras asociadas a las categorías.
+    SALIDA --> MERIENDA#EMPATE#NO -- FUNCIONA: debido a lasa ventas máximas y mínimas
+
+***14. Como en el caso anterior, se pretende comprobar qué pasaría si los valores se confunden con las letras asociadas a las categorías, pero en este caso, con todos los valores numéricos sustituidos por letras.
+    SALIDA --> undefined#undefined#NO -- NO FUNCIONA
+
+***15. Comprobamos lo que pasa si al caso anterior le añadimos una letra al valor numérico correspondiente a "N" o a "E".
+    SALIDA --> undefined#undefined#NO -- NO FUNCIONA: no funciona ni con "N", ni con "E"
+
+PRUEBA EN CONJUNTO. Comprobamos todos los casos de prueba en un mismo día.
+    SALIDA --> 
+        EMPATE#EMPATE#NO
+        EMPATE#EMPATE#NO
+        EMPATE#EMPATE#NO
+        EMPATE#EMPATE#NO
+        EMPATE#EMPATE#NO
+        MERIENDA#EMPATE#NO
+        EMPATE#CENAS#NO
+        DESAYUNO#COPAS#NO
+        COMIDA#COPAS#SI
+        DESAYUNO#EMPATE#NO
+        EMPATE#EMPATE#NO
+        EMPATE#DESAYUNO#NO
+        MERIENDA#EMPATE#NO
+        MERIENDA#COMIDA#NO
+        MERIENDA#COMIDA#NO
+
+        -- FUNCIONA: parece que el algoritmo en las pruebas finales, al encontrarse con variables sin definir, rescata los datos de la prueba anterior y los refleja de nuevo.
+
+
+CONCLUSIÓN: El algoritmo desarrollado es un algoritmo que cubre perfectamente las necesidades del cliente y se mantiene firme ante entradas no previstas (siguiendo y obviando ciertas premisas).
+
+@@ ALFREDO PUERTA GALLEGO - DW2E
