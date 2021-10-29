@@ -1,28 +1,28 @@
 <!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>fechas - alfredoPuerta DW2E</title>
-    </head>
 
-    <body>
         <script>
             var numCajas = 0;
+            var fechas = [];
 
-            function iniciar(){
+            function iniciar() {
                 mostrarFechaUsuario();
                 almacenarFechas();
+                ordenarFechas();
             }
 
-            function mostrarFechaUsuario(){
+            function mostrarFechaUsuario() {
                 numCajas = 2;
-                
+
                 var apartado = crearNodo('h2', document.body, 'apartado1');
                 apartado.innerHTML = 'Ejemplo de control input type="date"';
 
-                for(let i = 1; i <= numCajas; i++){
+                for (let i = 1; i <= numCajas; i++) {
                     var caja = crearNodo('div', document.body, 'caja0' + i);
                     caja.style.width = '100px';
                     caja.style.height = '30px';
@@ -31,7 +31,6 @@
                     caja.style.float = 'left';
                     caja.style.justifyContent = 'center';
                     caja.style.alignItems = 'center';
-                    // caja.style.textAlign = 'center';
                 }
 
                 var caja1 = document.getElementById('caja01');
@@ -39,10 +38,9 @@
 
                 var fechaUsuario = crearNodoInput('date', caja1, 'date');
                 var textoFecha = crearNodo('p', caja2, 'date-result');
-                fechaUsuario.addEventListener('change', function(){
+                fechaUsuario.addEventListener('change', function () {
                     var fecha = new Date(fechaUsuario.value);
                     textoFecha.innerHTML = fecha.toLocaleDateString();
-                    // caja2.innerHTML = fecha.toLocaleDateString();
                 });
 
                 /*Otra forma sin usar Date*/
@@ -54,56 +52,81 @@
                 crearSalto();
             }
 
-            function almacenarFechas(){
+            function almacenarFechas() {
                 numCajas = 24;
-                
+
                 var apartado = crearNodo('h2', document.body, 'apartado2');
                 apartado.innerHTML = '<br/>Listado 24 fechas a 6 columnas';
 
-                var fechas = [];
                 var fecha1 = new Date(2019, 0, 1);
                 var fecha2 = new Date(2019, 11, 31);
+                // console.log(fecha1 + '--' + fecha2);
 
-                console.log(fecha1 + '--' + fecha2);
-
-                for(let j = 0; j < 4; j++){
-                    for(let i = 0; i < 6; i++){
+                for (let j = 0; j < 4; j++) {
+                    for (let i = 0; i < 6; i++) {
                         var fecha = randomDate(fecha1, fecha2);
                         var caja = crearNodo('div', document.body, 'caja1' + i);
-                        caja.style.width = '100px';
-                        caja.style.height = '30px';
+                        caja.style.width = '80px';
+                        caja.style.height = '20px';
                         caja.style.border = '1px solid #CCC';
                         caja.style.display = 'flex';
                         caja.style.float = 'left';
                         caja.style.justifyContent = 'center';
                         caja.style.alignItems = 'center';
-                        //preguntar
                         // caja.innerHTML = fecha.toISOString();
-                        caja.innerHTML = fecha.toLocaleDateString().replace(/[/]/gi,'-');
+                        caja.innerHTML = fecha.toLocaleDateString().replace(/[/]/gi, '-');
 
                         fechas.push(fecha);
                     }
+                    crearSalto();
+                }
+                // console.log(fechas);
+            }
 
+            function ordenarFechas(){
+                var index = 0;
+                var apartado = crearNodo('h2', document.body, 'aparatado');
+                apartado.innerHTML = '<br/>De menor a mayor';
+
+                var fechas_menorMayor = fechas.sort(function(a, b){
+                    return a - b;
+                });
+
+                for(let j = 0; j < 4; j++){
+                    for(let i = 0; i < 6; i++){
+                        var caja = crearNodo('div', document.body, 'caja1' + i);
+                        caja.style.width = '80px';
+                        caja.style.height = '20px';
+                        caja.style.border = '1px solid #CCC';
+                        caja.style.display = 'flex';
+                        caja.style.float = 'left';
+                        caja.style.justifyContent = 'center';
+                        caja.style.alignItems = 'center';
+                        caja.innerHTML = fechas_menorMayor[index].toLocaleDateString().replace(/[/]/gi, '-');
+                        index++;
+                    }
                     crearSalto();
                 }
 
-                console.log(fechas);
+                // var a = new Date();
+                // console.log(a.toISOString);
+                
             }
 
             function randomDate(start, end) {
-                console.log('paso por randomdate');
+                // console.log('paso por randomdate');
                 return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
             }
 
 
-            function crearNodo(tipo, padre, id){
+            function crearNodo(tipo, padre, id) {
                 var nodo = document.createElement(tipo);
                 nodo.id = id;
                 padre.appendChild(nodo);
                 return nodo;
             }
 
-            function crearNodoInput(tipo, padre, id){
+            function crearNodoInput(tipo, padre, id) {
                 var nodo = document.createElement('input');
                 nodo.setAttribute('type', tipo);
                 nodo.id = id;
@@ -112,14 +135,17 @@
             }
 
             function crearSalto() {
-			// div vacio sin dimensiones con clear left
-			var ele = document.createElement('div'); // crear nodo
-			ele.style.clear = 'left'; // css posicionamiento
-			document.body.appendChild(ele);	// añadir nodo al dom 
-		}
+                // div vacio sin dimensiones con clear left
+                var ele = document.createElement('div'); // crear nodo
+                ele.style.clear = 'left'; // css posicionamiento
+                document.body.appendChild(ele);	// añadir nodo al dom 
+            }
 
             window.onload = iniciar;
         </script>
+    </head>
+
+    <body>
     </body>
 
 </html>
