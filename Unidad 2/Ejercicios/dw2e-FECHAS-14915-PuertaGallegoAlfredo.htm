@@ -123,24 +123,20 @@
 
                 for(let i = 0; i < cajas.length; i++){
                     if(i + 1 < cajas.length){
-                        var dif = fechasOrdenadas[i].getDay() - fechasOrdenadas[i + 1].getDay();
-                        fechasOrdenadas[i] += ':' + dif;
-                        console.log(fechasOrdenadas[i].split(':')[1]);
+                        var dif = Math.abs(fechasOrdenadas[i + 1].getDay() - fechasOrdenadas[i].getDay());
+                        fechasOrdenadas[i] = fechasOrdenadas[i].toLocaleDateString() + ':' + dif;
+                        // console.log(fechasOrdenadas[i]);
                         cajas[i].innerHTML = fechasOrdenadas[i];
                     }
                 }
-
                 cajas[cajas.length - 1].style.display = 'none';
-                
-                // var a = new Date();
-                // console.log(a.getDay());
             }
 
             function crearTabla(num){
                 for(let j = 0; j < 4; j++){
                     for(let i = 0; i < 6; i++){
                         var caja = crearNodo('div', document.body, '', 'cajas-fechas' + num);
-                        caja.style.width = '80px';
+                        caja.style.width = '100px';
                         caja.style.height = '20px';
                         caja.style.border = '1px solid #CCC';
                         caja.style.display = 'flex';
