@@ -6,6 +6,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>fechas - alfredoPuerta DW2E</title>
 
+        <style>
+            *{margin: 0}
+        </style>
+
         <script>
             var fechas = [];
 
@@ -14,6 +18,7 @@
                 almacenarFechas();
                 ordenarFechas();
                 diferenciarFechas();
+                // console.log(fechas);
             }
 
             function mostrarFechaUsuario() {
@@ -24,13 +29,7 @@
 
                 for (let i = 1; i <= numCajas; i++) {
                     var caja = crearNodo('div', document.body, 'caja0' + i);
-                    caja.style.width = '100px';
-                    caja.style.height = '30px';
-                    caja.style.border = '1px solid #CCC';
-                    caja.style.display = 'flex';
-                    caja.style.float = 'left';
-                    caja.style.justifyContent = 'center';
-                    caja.style.alignItems = 'center';
+                    darEstilos(caja, 100, 30, 'center');
                 }
 
                 var caja1 = document.getElementById('caja01');
@@ -62,7 +61,7 @@
                 // console.log(fecha1 + '--' + fecha2);
                 
                 let numLlamada = 1; //para diferenciar las cajas con distintas clases, dependiendo de cada apartado
-                crearTabla(numLlamada);
+                crearTabla(numLlamada, 100, 20, 'right');
 
                 var cajas = document.getElementsByClassName('cajas-fechas' + numLlamada);
                 for(let i = 0; i < cajas.length; i++){
@@ -82,13 +81,12 @@
                 });
 
                 let numLlamada = 2;
-                crearTabla(numLlamada);
+                crearTabla(numLlamada, 100, 20, 'right');
                 var cajas = document.getElementsByClassName('cajas-fechas' + numLlamada);
                 // console.log(cajas);
 
                 for(let i = 0; i < cajas.length; i++){
-                    var fecha = fechas_menorMayor[i].toLocaleDateString().replace(/[/]/gi, '-');
-                    cajas[i].innerHTML = fecha;
+                    cajas[i].innerHTML = fechas_menorMayor[i].toLocaleDateString().replace(/[/]/gi, '-');
                 }
 
                 /*********ORDENAMOS DE MAYOR A MENOR*********/
@@ -96,57 +94,112 @@
                 apartado_mayorMenor.innerHTML = '<br/>De mayor a menor';
 
                 numLlamada = 3
-                crearTabla(numLlamada);
+                crearTabla(numLlamada, 100, 20, 'right');
                 var cajas = document.getElementsByClassName('cajas-fechas' + numLlamada);
-                // console.log(cajas);
 
                 var fechas_mayorMenor = fechas_menorMayor.reverse();
 
                 for(let i = 0; i < cajas.length; i++){
-                    cajas[i].innerHTML = fechas_mayorMenor[i].toLocaleDateString().replace(/[/]/gi, '-');;
+                    cajas[i].innerHTML = fechas_mayorMenor[i].toLocaleDateString().replace(/[/]/gi, '-');
                 }
             }
 
             function diferenciarFechas(){
+                /*DIFERENCIAS EN DIAS CON LA SIGUIENTE FECHA, A DOS CARACTERES SIN DECIMALES*/
                 var apartado = crearNodo('h2', document.body, 'aparatado');
                 apartado.innerHTML = '<br/>Diferencias en dias con la siguiente fecha, a dos caracteres sin decimales';
 
                 let numLlamada = 4;
-                crearTabla(numLlamada);
+                crearTabla(numLlamada, 100, 20, 'right');
 
                 var cajas = document.getElementsByClassName('cajas-fechas' + numLlamada);
-                // console.log(cajas);
-                
-                var fechasOrdenadas= fechas.sort(function(a, b){
+                var fechasOrdenadas = fechas.sort(function(a, b){
                     return a - b;
                 });
 
                 for(let i = 0; i < cajas.length; i++){
                     if(i + 1 < cajas.length){
-                        var dif = Math.abs(fechasOrdenadas[i + 1].getDay() - fechasOrdenadas[i].getDay());
+                        var auxDif = Math.abs(fechasOrdenadas[i + 1].getTime() - fechasOrdenadas[i].getTime());
+                        var dif = (auxDif / (1000 * 3600 * 24)).toFixed(0);
+                        if(dif.toString().length == 1){dif = '0' + dif;}
                         fechasOrdenadas[i] = fechasOrdenadas[i].toLocaleDateString() + ':' + dif;
-                        // console.log(fechasOrdenadas[i]);
-                        cajas[i].innerHTML = fechasOrdenadas[i];
+                        cajas[i].innerHTML = fechasOrdenadas[i].replace(/[/]/gi, '-');
                     }
                 }
                 cajas[cajas.length - 1].style.display = 'none';
+
+                // console.log(fechasOrdenadas);
+                diferenciarMayorMenorDia(fechasOrdenadas);
+                diferenciarFechasAltaBaja(fechasOrdenadas);
+                mostrarDiasEntreFechas(fechasOrdenadas);
             }
 
-            function crearTabla(num){
+            function diferenciarMayorMenorDia(arr){
+                /*MAYOR Y MENOR DIFERENCIA ENTRE DIAS*/
+                var apartado = crearNodo('h2', document.body, 'aparatado');
+                apartado.innerHTML = '<br/>Mayor y menor diferencia entre dias'
+                
+                var caja = crearNodo('div', document.body, '', 'cajas-fechas5');
+                darEstilos(caja, 300, 20);
+                var diferenciaDias = [], max = 0, min = 999;
+
+                for(let i = 0; i < arr.length; i++){
+                    var dif = parseInt(arr[i].toString().split(':')[1]);
+                    if(dif > max){max = dif;}
+                    if(dif < min){min = dif;}
+                }
+                
+                caja.innerHTML = 'mayor:' + max + ' y menor:' + min;
+                crearSalto();
+            }
+
+            function diferenciarFechasAltaBaja(arr){
+                var apartado = crearNodo('h2', document.body, 'aparatado');
+                apartado.innerHTML = '<br/>Fecha mas alta y mas baja';
+
+                var caja = crearNodo('div', document.body, '', 'cajas-fechas5');
+                darEstilos(caja, 300, 20);
+                caja.innerHTML = 'baja:' + arr[0].split(':')[0].replace(/[/]/gi, '-') + ' alta: ' + arr[arr.length - 2].split(':')[0].replace(/[/]/gi, '-');
+                crearSalto();
+            }
+
+            //no funciona del todo
+            function mostrarDiasEntreFechas(arr){
+                var apartado = crearNodo('h2', document.body, 'aparatado');
+                apartado.innerHTML = '<br/>Dias entre la fecha mas alta y mas baja';
+
+                var caja = crearNodo('div', document.body, '', 'cajas-fechas5');
+                darEstilos(caja, 300, 20);
+                var diferencia = 
+                caja.innerHTML = 'dias entre fechas:' + parseInt(diferencia);
+
+                var fecha1 = new Date(arr[arr.length - 2].split(':')[0]);
+                var fecha2 = new Date(arr[0].split(':')[0]);
+
+                var auxDif = Math.abs(fecha1.getTime() - fecha2.getTime());
+                var dif = (auxDif / (1000 * 3600 * 24)).toFixed(0);
+
+                crearSalto();
+            }
+
+            function crearTabla(num, ancho, alto, alineado){
                 for(let j = 0; j < 4; j++){
                     for(let i = 0; i < 6; i++){
                         var caja = crearNodo('div', document.body, '', 'cajas-fechas' + num);
-                        caja.style.width = '100px';
-                        caja.style.height = '20px';
-                        caja.style.border = '1px solid #CCC';
-                        caja.style.display = 'flex';
-                        caja.style.float = 'left';
-                        caja.style.justifyContent = 'center';
-                        caja.style.alignItems = 'center';
+                        darEstilos(caja, ancho, alto, alineado);
                     }
-
                     crearSalto();
                 }
+            }
+
+            function darEstilos(caja, ancho, alto, alineado){
+                caja.style.width = ancho + 'px';
+                caja.style.height = alto + 'px';
+                caja.style.border = '1px solid #CCC';
+                caja.style.display = 'flex';
+                caja.style.float = 'left';
+                caja.style.justifyContent = alineado;
+                caja.style.alignItems = 'center';
             }
 
             function randomDate(start, end) {
@@ -154,20 +207,19 @@
                 return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
             }
 
-
-            function crearNodo(tipo, padre, id, _class) {
+            function crearNodo(tipo, padre, id, clase) {
                 var nodo = document.createElement(tipo);
                 if(id != ''){nodo.id = id;}
-                if(_class != ''){nodo.className = _class;}
+                if(clase != ''){nodo.className = clase;}
                 padre.appendChild(nodo);
                 return nodo;
             }
 
-            function crearNodoInput(tipo, padre, id, _class) {
+            function crearNodoInput(tipo, padre, id, clase) {
                 var nodo = document.createElement('input');
                 nodo.setAttribute('type', tipo);
                 if(id != ''){nodo.id = id;}
-                if(_class != ''){nodo.className = _class;}
+                if(clase != ''){nodo.className = clase;}
                 padre.appendChild(nodo);
                 return nodo;
             }
@@ -185,5 +237,4 @@
 
     <body>
     </body>
-
 </html>
