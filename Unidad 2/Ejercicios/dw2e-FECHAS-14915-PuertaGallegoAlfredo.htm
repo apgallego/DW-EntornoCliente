@@ -11,6 +11,7 @@
         </style>
 
         <script>
+            //array que almacenará las diferentes fechas generadas.
             var fechas = [];
 
             function iniciar() {
@@ -18,9 +19,9 @@
                 almacenarFechas();
                 ordenarFechas();
                 diferenciarFechas();
-                // console.log(fechas);
             }
 
+            //función que recoje la fecha introducida por el usuario y la devuelve en un nuevo nodo <p>
             function mostrarFechaUsuario() {
                 numCajas = 2;
 
@@ -52,13 +53,13 @@
                 crearSalto();
             }
 
+            //función que genera 24 fechas de 2019 y las almacena en un array
             function almacenarFechas() {
                 var apartado = crearNodo('h2', document.body, 'apartado2');
                 apartado.innerHTML = '<br/>Listado 24 fechas a 6 columnas';
                 
                 var fecha1 = new Date(2019, 0, 1);
                 var fecha2 = new Date(2019, 11, 31);
-                // console.log(fecha1 + '--' + fecha2);
                 
                 let numLlamada = 1; //para diferenciar las cajas con distintas clases, dependiendo de cada apartado
                 crearTabla(numLlamada, 100, 20, 'right');
@@ -71,6 +72,7 @@
                 }
             }
 
+            //función que utiliza el array de fechas generadas anteriormente y lo ordena de mayor a menor y viceversa. 
             function ordenarFechas(){
                 /*********ORDENAMOS DE MENOR A MAYOR*********/
                 var apartado_menorMayor = crearNodo('h2', document.body, 'aparatado');
@@ -104,6 +106,8 @@
                 }
             }
 
+            //función que muestra las fechas ordenadas y con la diferencia de días entre las que van seguidas.
+            //llama también a funciones para operar con fechas.
             function diferenciarFechas(){
                 /*DIFERENCIAS EN DIAS CON LA SIGUIENTE FECHA, A DOS CARACTERES SIN DECIMALES*/
                 var apartado = crearNodo('h2', document.body, 'aparatado');
@@ -116,24 +120,25 @@
                 var fechasOrdenadas = fechas.sort(function(a, b){
                     return a - b;
                 });
+                var fechasOrdenadasDias = [];
 
                 for(let i = 0; i < cajas.length; i++){
                     if(i + 1 < cajas.length){
                         var auxDif = Math.abs(fechasOrdenadas[i + 1].getTime() - fechasOrdenadas[i].getTime());
                         var dif = (auxDif / (1000 * 3600 * 24)).toFixed(0);
                         if(dif.toString().length == 1){dif = '0' + dif;}
-                        fechasOrdenadas[i] = fechasOrdenadas[i].toLocaleDateString() + ':' + dif;
-                        cajas[i].innerHTML = fechasOrdenadas[i].replace(/[/]/gi, '-');
+                        fechasOrdenadasDias.push(fechasOrdenadas[i].toLocaleDateString() + ':' + dif);
+                        cajas[i].innerHTML = fechasOrdenadasDias[i].replace(/[/]/gi, '-');
                     }
                 }
                 cajas[cajas.length - 1].style.display = 'none';
 
-                // console.log(fechasOrdenadas);
                 diferenciarMayorMenorDia(fechasOrdenadas);
-                diferenciarFechasAltaBaja(fechasOrdenadas);
+                diferenciarFechasAltaBaja(fechasOrdenadasDias);
                 mostrarDiasEntreFechas(fechasOrdenadas);
             }
 
+            //función que muestra la mayor y la menor diferencia entre días
             function diferenciarMayorMenorDia(arr){
                 /*MAYOR Y MENOR DIFERENCIA ENTRE DIAS*/
                 var apartado = crearNodo('h2', document.body, 'aparatado');
@@ -153,6 +158,7 @@
                 crearSalto();
             }
 
+            //función que muestra la mayor y la menor fecha
             function diferenciarFechasAltaBaja(arr){
                 var apartado = crearNodo('h2', document.body, 'aparatado');
                 apartado.innerHTML = '<br/>Fecha mas alta y mas baja';
@@ -163,25 +169,25 @@
                 crearSalto();
             }
 
-            //no funciona del todo
+            //función que muestra la diferencia total de días entre la fecha mayor y la menor.
             function mostrarDiasEntreFechas(arr){
                 var apartado = crearNodo('h2', document.body, 'aparatado');
                 apartado.innerHTML = '<br/>Dias entre la fecha mas alta y mas baja';
 
                 var caja = crearNodo('div', document.body, '', 'cajas-fechas5');
-                darEstilos(caja, 300, 20);
-                var diferencia = 
-                caja.innerHTML = 'dias entre fechas:' + parseInt(diferencia);
+                darEstilos(caja, 300, 20, 'left');
 
-                var fecha1 = new Date(arr[arr.length - 2].split(':')[0]);
-                var fecha2 = new Date(arr[0].split(':')[0]);
+                var fecha1 = arr[0];
+                var fecha2 = arr[arr.length - 2];
 
                 var auxDif = Math.abs(fecha1.getTime() - fecha2.getTime());
                 var dif = (auxDif / (1000 * 3600 * 24)).toFixed(0);
 
+                caja.innerHTML = 'dias entre fechas:' + dif;
                 crearSalto();
             }
 
+            //función que crea las tablas donde se muestran las fechas.
             function crearTabla(num, ancho, alto, alineado){
                 for(let j = 0; j < 4; j++){
                     for(let i = 0; i < 6; i++){
@@ -192,6 +198,7 @@
                 }
             }
 
+            //función que da estilos a las tablas
             function darEstilos(caja, ancho, alto, alineado){
                 caja.style.width = ancho + 'px';
                 caja.style.height = alto + 'px';
@@ -202,11 +209,13 @@
                 caja.style.alignItems = 'center';
             }
 
+            //función que genera una fecha al azar en un rango introducido.
             function randomDate(start, end) {
                 // console.log('paso por randomdate');
                 return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
             }
 
+            //función para crear nodos indicando padre, id y clase.
             function crearNodo(tipo, padre, id, clase) {
                 var nodo = document.createElement(tipo);
                 if(id != ''){nodo.id = id;}
@@ -215,6 +224,7 @@
                 return nodo;
             }
 
+            //función para crear nodos específicos con su tipo deseado.
             function crearNodoInput(tipo, padre, id, clase) {
                 var nodo = document.createElement('input');
                 nodo.setAttribute('type', tipo);
@@ -224,6 +234,7 @@
                 return nodo;
             }
 
+            //función para crear saltos en las diferentes tablas de representación de fechas.
             function crearSalto() {
                 // div vacio sin dimensiones con clear left
                 var ele = document.createElement('div'); // crear nodo
