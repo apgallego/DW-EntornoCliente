@@ -4,7 +4,7 @@
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>fechas - alfredoPuerta DW2E</title>
+        <title>calendario2 - alfredoPuerta DW2E</title>
 
         <script>
 
@@ -15,29 +15,24 @@
             function iniciar(){
                 // var anio = prompt('¿De qué año desea ver el calendario?');
                 // mostrarAnio(anio);
-
+                
                 for(let i = 2000; i < 2022; i++){
                     var anioCalendario = crearNodo('h2', document.body);
                     anioCalendario.innerHTML = 'Año ' + i;
                     mostrarAnio(i);
                     crearSalto();
                 }
-
+                
                 mostrarAnio(2019);
             }
-
+            
             //función que muestra cada uno de los meses
             function mostrarAnio(anio){
-                var fechaInicial = new Date(anio, 0, 1);
-                console.log(diasSemana[fechaInicial.getDate()]);
-                //devuelve el dia de la semana correspondiente a la fecha inicial.
-                
                 //crea los meses con los dias
                 for(let i = 0; i < meses.length; i++){
                     var mes = crearNodo('div', document.body, '', 'meses');
                     var mesNombre = crearNodo('div', mes, '', '');
                     mes.style.display = 'block';
-                    // mes.style.float = 'left';
                     mes.style.width = '1500px';
                     mes.style.height = '30px';
                     mesNombre.style.float = 'left';
@@ -50,43 +45,61 @@
                     var k = 0;
                     for(let j = 1; j <= parseInt(diasMeses[i]); j++){
                         var dia = crearNodo('div', mes, '', 'dias');
-                        dia.style.width = '20px';
+                        dia.style.width = '30px';
                         dia.style.float = 'left';
                         dia.style.fontSize = '14px';
                         dia.style.textAlign = 'center';
-                        dia.style.backgroundColor = 'lightyellow';
-                        if(j > 7){ 
+                        dia.style.backgroundColor = 'rgb(250, 250, 180)';
+                        if(j > 7){
                             if(k >= 7){k = 0;}
                             dia.innerHTML = j + '<br/>' + diasSemana[k];
+                            // dia.innerHTML = j + '<br/>' + fechaCalendario(i)[k];
                             k++;
                         } else {dia.innerHTML = j + '<br/>' + diasSemana[j - 1];}
                         if(dia.innerHTML.includes('S') || dia.innerHTML.includes('D')){dia.style.color = 'red';}
                         dia.addEventListener('click', crearNota);
+                        dia.addEventListener('mouseenter', function(){
+                            this.style.cursor = 'pointer';
+                            this.style.textShadow = '0px 0px 5px black';
+                        });
+                        dia.addEventListener('mouseout', function(){
+                            this.style.textShadow = 'none';
+                        });
                     }
 
                     crearSalto();
                 }
             }
 
+            // function fechaCalendario(anio){
+            //     var fechaInicial = new Date(anio, 0, 1);
+            //     const diaFechaInicial = {
+            //         diaSemana: diaSemana[fechaInicial.getDate()],
+            //         diaMes: fechaInicial.getDay()
+            //     };
+            //     var diasMes = [];
+            //     diasMes.push(diaMes);
+            //     return diasMes.sort(function(a, b){
+            //         return a - b;
+            //     });
+
+            // }
+
             //función que crea notas dentro de cada día utilizando el atributo 'title' como almacenamiento.
             function crearNota(){
                 if(this.title){
-
-                    if(this.title !== null && this.title !== undefined && this.title != ''){
-                       this.style.backgroundColor = 'lightyellow'; 
-                    }
                     var editar = confirm(this.title + '\n\n¿Editar la nota?');
                     if(editar){
                         var nuevaNota = prompt('', this.title);
                         this.title = nuevaNota;
-                        return;
-                    } else {
-                        return;
-                    }
+                        if(nuevaNota == ''){this.style.backgroundColor = 'rgb(250, 250, 180)';
+                        } else {return;}
+                    } else {return;}
+                } else {
+                    var nota = prompt('Escriba una nota: ');
+                    this.title = nota;
+                    this.style.backgroundColor = 'yellow';
                 }
-                var nota = prompt('Escriba una nota: ');
-                this.title = nota;
-                this.style.backgroundColor = 'yellow';
             }
 
             //función que crea nodos
