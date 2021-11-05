@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <style>
+            .pagination {display: inline-block;}
+
+            .pagination a {
+                color: black;
+                float: left;
+                padding: 8px 16px;
+                text-decoration: none;
+                transition: background-color .2s;
+                border: 1px solid #ddd;
+            }
+
+            .pagination a:hover {background-color: #ddd;}
+
+            a:target, a:active {
+                background-color: #4CAF50 !important;
+                /* el activo no cambia de color */
+                color: white;
+                border: 1px solid #4CAF50;
+            }
+
+                /*
+            :target;
+            al clicar una pagina saltamos con el href,
+            el salto no tiene efecto,
+            pero si :target;
+            */
+                /*
+            podemos usar una clase para controlar desde JS
+
+            .pagination a.active {
+                background-color: #4CAF50;
+                color: white;
+                border: 1px solid #4CAF50;
+            }
+
+            .pagination a:hover:not(.active) {background-color: #ddd;}
+
+            */
+
+            /*CSS PARA EL GRID LAYOUT*/
+            .item1 {
+                grid-area: header;
+                display: flex;
+                justify-content: center;
+            }
+
+            .item2 {
+                grid-area: menu;
+                display: flex;
+                justify-content: center;
+            }
+
+            .item3 {
+                grid-area: main;
+                display: flex;
+                justify-content: center;
+            }
+
+            .item4 {
+                grid-area: right;
+                display: flex;
+                justify-content: center;
+            }
+
+            .item5 {
+                grid-area: footer;
+                display: flex;
+                justify-content: center;
+            }
+
+            .grid-container {
+                display: grid;
+                grid-template-areas:
+                    'header header header header header header'
+                    'menu main main main main right'
+                    'footer footer footer footer footer footer';
+                grid-gap: 10px;
+                background-color: #2196F3;
+                padding: 10px;
+            }
+
+            .grid-container > div {
+                background-color: rgba(255, 255, 255, 0.8);
+                text-align: center;
+                padding: 20px 0;
+                font-size: 30px;
+            }
+        </style>
+
+        <script>
+            //variables que recogerán los elementos del main y del menú para el filtrado
+            var cajaNodosMain = [];
+            var cajaNodosMenu = [];
+
+            function inicio() {
+                var ele1 = document.getElementById('d1');
+                var ele2 = document.getElementById('d8');
+                ele1.onclick = cursor;
+                ele2.onclick = cursor;
+
+                generarNodosMain();
+            }
+
+            function generarNodosMain(){
+                var main = document.getElementsByClassName('item3')[0];
+                var container = crearNodo('div', main, 'container-main', '');
+                container.style.display = 'flex';
+                container.style.justifyContent = 'center';
+                container.style.flexWrap = 'wrap';
+                container.style.padding = '5px';
+                container.style.gap = '5px';
+                container.style.width = '500px';
+                container.style.height = '100px';
+                container.style.overflow = 'hidden';
+                container.style.border = '1px solid black';
+                for(let i = 0; i < numRandom(100, 0); i++){
+                    var nodo = crearNodo('div', container, '', 'nodo-main');
+                    darEstilosNodos(nodo, i);
+                    cajaNodosMain.push(nodo);
+                    container.appendChild(nodo);
+                }
+                main.appendChild(container);
+            }
+
+            function darEstilosNodos(nodo, i){
+                nodo.style.width = '30px';
+                nodo.style.height = '100px';
+                nodo.style.border = '1px solid black';
+                nodo.style.textAlign = 'center';
+                nodo.style.fontSize = '20px';
+                nodo.innerHTML = i;
+                nodo.style.backgroundColo = 'rgb(' + numRandom(255, 0) + ', '+numRandom(255, 0) + ', ' + numRandom(255, 0) + ')';
+            }
+
+            function cursor() {
+                // controlar y mover el activo
+                // no esta RENDERIZADO !!!!
+                // console.log(document.getElementById('d2').style.backgroundColor);
+
+                // no queda otra que controlarlo por JS
+            }
+
+            function crearNodo(tipo, padre, id, clase) {
+                var nodo = document.createElement(tipo);
+                if(id != ''){nodo.id = id;}
+                if(clase != ''){nodo.className = clase;}
+                padre.appendChild(nodo);
+                return nodo;
+            }
+
+            // function crearSalto() {
+            //     // div vacio sin dimensiones con clear left
+            //     var ele = document.createElement('div'); // crear nodo
+            //     ele.style.clear = 'left'; // css posicionamiento
+            //     document.body.appendChild(ele);	// añadir nodo al dom 
+            // }
+
+            function numRandom(max, min){
+			    // console.log('paso por numRandom');
+			    return Math.floor(Math.random() * (max - min) + min);
+		    }
+
+            window.onload = inicio;
+        </script>
+    </head>
+
+    <body>
+        <h2>Pagination with Borders</h2>
+
+        <div class="grid-container">
+            <!--HEADER-->
+            <div class="item1"></div>
+            <!--MENU-->
+            <div class="item2"></div>
+            <!--MAIN-->
+            <div class="item3"></div>
+            <!--RIGHT-->
+            <div class="item4"></div>
+            <!--FOOTER-->
+            <div class="item5">
+                <div class="pagination">
+                    <a id='d1'>&laquo;</a>
+                    <a id='d2' href="#d2">1</a>
+                    <a id='d3' href="#d3">2</a>
+                    <a id='d4' href="#d4">3</a>
+                    <a id='d5' href="#d5">4</a>
+                    <a id='d6' href="#d6">5</a>
+                    <a id='d7' href="#d7">6</a>
+                    <a id='d8'>&raquo;</a>
+                </div>
+            </div>
+        </div>
+
+
+    </body>
+</html>
