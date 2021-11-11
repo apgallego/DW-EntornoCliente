@@ -1,0 +1,34 @@
+nombre: DW2E-PC12-expediente-ApellidoNombre.htm
+tiempo: 90 minutos
+acceso a internet: si
+
+Criterios de evaluación ==
+- El nombre del fichero es el indicado arriba
+- Solo se evaluan los ficheros con el nombre totalmente correcto sino es un cero.
+- Subir a la carpeta de clase, se pueden hacer multiples entregas, se evalua la ultima dentro del tiempo. Sino se sube nada es un cero. Si solo se sube fuera de tiempo es un cero.
+- Leer este enunciado detenidamente. Durante el examen no hay preguntas.
+- La prueba es en linux, firefox en los equipos del aula.
+
+
+Evaluación:
+Realizar un página solo javascript y estilos. El usuario podra hacer click en cualquier caja hasta completar las 32 totales. Luego todos los clik indicarán el mismo mensaje.
+
+
+Apartados:
+
+A) Pagina inicial (1 puntos)
+- dimensiones y alineacion exactas de la caja
+- color al azar en cada recarga
+- texto de la caja en contenido y formato exacto
+
+B) Desarrollo (3 puntos)
+- clicks en la primera caja creará cajas sucesivas. 
+- clicks en cualquier caja crea cajas sucesivas.
+- color al azar en cada caja nueva creada.
+- numeros consecutivos en los textos de las cajas
+- filas de 8 cajas
+
+C) Final (2 puntos)
+- despues de mostrar 32 cajas, un click en cualquier caja muestra un mensaje.
+- el texto del mensaje es exacto tal cual aparece en el video.
+- click sucesivos en cualquier caja vuelven a poner el mismo mensaje sin cambiar las cajas ni crear nuevas cajas.
