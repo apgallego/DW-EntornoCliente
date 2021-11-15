@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <style>
+        #div1,
+        #div2 {
+            float: left;
+            width: 100px;
+            height: 35px;
+            margin: 10px;
+            padding: 10px;
+            border: 1px solid black;
+        }
+    </style>
+    <script>
+        function iniciar(){
+            var div1 = document.getElementById('div1');
+            console.log(div1);
+            var div2 = document.getElementById('div2');
+            console.log(div2);
+            var img = document.getElementById('drag1');
+            console.log(drag1);
+
+            div1.addEventListener("click", preventDef);
+            div1.addEventListener("drop", drop);
+            div1.addEventListener("dragover", allowDrop);
+            
+            div2.addEventListener("click", preventDef);
+            div2.addEventListener("drop", drop);
+            div2.addEventListener("dragover", allowDrop);
+
+            img.addEventListener("click", preventDef);
+            img.addEventListener("dragstart", drag);
+        }
+                
+        function preventDef(event){
+            console.log('se dispara el evento "click" -> preventDef');
+            event.preventDefault();
+        }
+
+        function allowDrop(ev) {
+            console.log('se dispara el evento "dragover" -> allowDrop');
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            console.log('se dispara el evento "dragstart" -> drag');
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            console.log('se dispara el evento "drop" -> drop');
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            try{
+                ev.target.appendChild(document.getElementById(data));
+            } catch(err){
+                console.log(' * La imagen se ha devuelto a su posición inicial.');
+            }
+        }
+
+        window.onload = iniciar;
+    </script>
+</head>
+
+<body>
+
+    <h2>Drag and Drop</h2>
+    <p>Drag the image back and forth between the two div elements.</p>
+
+    <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"> -->
+    <div id="div1">
+        <!-- <img src="Willyrex.png" draggable="true" ondragstart="drag(event)" id="drag1" width="88" height="31"> -->
+        <img src="imagen.png" draggable="true" id="drag1" width="88" height="31">
+    </div>
+
+    <!-- <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
+    <div id="div2"></div>
+
+</body>
+
+</html>
