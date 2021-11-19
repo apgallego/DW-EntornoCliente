@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dw2e-DRAGANDDROP-14915-PuertaGallegoAlfredo.css">
+    <title>Drag and drop - alfredoPuertaDW2E</title>
+
+    <script>
+        var contenedores = [];
+        var elemsAñadir = [];
+        var elemsBorrar = [];
+
+        var indexBookmarks = 0, indexEtiquetas = 0;
+
+        function iniciar() {
+            var cajaBookmarks = crearNodo('div', document.body, 'cajaBM', 'contenedor', '');
+                contenedores.push(cajaBookmarks);
+            var cajaContenido = crearNodo('div', document.body, 'cajaCont', 'contenedor', '');
+                contenedores.push(cajaContenido);
+            var cajaEtiquetas = crearNodo('div', document.body, 'cajaEtiquetas', 'contenedor', '');
+                contenedores.push(cajaEtiquetas);
+            // crearElementosFuncionales(cajaBookmarks, cajaContenido, cajaEtiquetas);
+
+            for (let i = 0; i < contenedores.length; i++) {
+                
+                var heading = crearNodo('div', contenedores[i], 'heading' + i + 1, 'heading', '');
+                if (i == 0) {
+                    heading.innerHTML = 'BOOKMARKS';
+                    var etAñadir = crearNodo('div', contenedores[i], 'añadir' + i + 1, 'etiqueta-añadir', 'añadir +');
+                } else if (i == 1) {
+                    heading.innerHTML = 'CONTENIDO';
+                    var labelTitulo = crearNodo('label', contenedores[i], '', 'label', 'titulo');
+                    var titulo = crearNodo('div', contenedores[i], 'titulo', 'filter', '');
+
+                    var labelURL = crearNodo('label', contenedores[i], '', 'label', 'url');
+                    var url = crearNodo('div', contenedores[i], 'url', 'filter', '');
+
+                    var labelDescrip = crearNodo('label', contenedores[i], '', 'label', 'descrip');
+                    var descrip = crearNodo('div', contenedores[i], 'descripcion', 'filter', '');
+                } else {
+                    heading.innerHTML = 'ETIQUETAS';
+                    var etAñadir = crearNodo('div', contenedores[i], 'añadir' + i + 1, 'etiqueta-añadir', 'añadir +');
+                }
+                var etBorrar = crearNodo('div', contenedores[i], 'borrar' + i + 1, 'etiqueta-borrar', 'borrar drag and drop aqui');
+            }
+        }
+
+        function clickAñadir() {
+
+        }
+
+        function clickBorrar() {
+
+        }
+
+        // function crearElementosFuncionales(cajaBookmarks, cajaContenido, cajaEtiquetas){
+        //     var contenedores = [cajaBookmarks, cajaContenido, cajaEtiquetas];
+
+        //     for(let i = 0; i < contenedores.length; i++){
+        //         var heading = crearNodo('div', contenedores[i], '', 'heading', '');
+        //         if (i == 0){
+        //             heading.innerHTML = 'BOOKMARKS';
+        //             var etAñadir = crearNodo('div', contenedores[i], '', 'etiqueta-añadir', 'añadir +');
+        //         } else if (i == 1){
+        //             heading.innerHTML = 'CONTENIDO';
+        //             var labelTitulo = crearNodo('label', contenedores[i], '', 'label', 'titulo');
+        //             var titulo = crearNodo('div', contenedores[i], 'titulo', 'filter', '');
+
+        //             var labelURL = crearNodo('label', contenedores[i], '', 'label', 'url');
+        //             var url = crearNodo('div', contenedores[i], 'url', 'filter', '');
+
+        //             var labelDescrip = crearNodo('label', contenedores[i], '', 'label', 'descrip');
+        //             var descrip = crearNodo('div', contenedores[i], 'descripcion', 'filter', '');
+        //         } else {
+        //             heading.innerHTML = 'ETIQUETAS';
+        //             var etAñadir = crearNodo('div', contenedores[i], '', 'etiqueta-añadir', 'añadir +');
+        //         }
+
+        //         var etBorrar = crearNodo('div', contenedores[i], '', 'etiqueta-borrar', 'borrar drag and drop aqui');
+
+        //     }
+        // }
+
+        function crearNodo(tipo, padre, id, clase, inner) {
+            var nodo = document.createElement(tipo);
+            if (id != '') { nodo.id = id; }
+            if (clase != '') { nodo.className = clase; }
+            if (inner != '') { nodo.innerHTML = inner; }
+            padre.appendChild(nodo);
+            return nodo;
+        }
+
+        window.onload = iniciar;
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

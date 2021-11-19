@@ -1,0 +1,16 @@
+/*CSS enlazado a dw2e-DRAGANDDROP-14915-PuertaGallegoAlfredo.htm (Ejercicio JS - Drag and drop)*/
+
+.contenedor, .heading, .filter, div[id^='caja'], .etiqueta-borrar, .etiqueta-añadir, .elemento{
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.contenedor{
+    float: left;
+    margin: auto;
+}
+
+.contenedor *{margin: 5px;}
+.etiqueta-añadir{background-color: lime;}
+.heading{background-color: cyan;}
+.etiqueta-borrar:hover{background-color: #999;}

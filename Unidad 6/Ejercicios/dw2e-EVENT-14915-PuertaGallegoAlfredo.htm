@@ -28,15 +28,6 @@
             p = crearNodo('p', document.body, 'info', '')
             p.style.clear = 'left';
 
-            // console.log(p.innerHTML);
-
-            // var div1 = document.getElementById('div1');
-            // console.log(div1);
-            // var div2 = document.getElementById('div2');
-            // console.log(div2);
-            // var img = document.getElementById('drag1');
-            // console.log(drag1);
-
             div1.addEventListener("click", preventDef);
             div1.addEventListener("drop", drop);
             div1.addEventListener("dragover", allowDrop);
@@ -55,61 +46,62 @@
         }
                 
         function preventDef(ev){
-            // console.log('se dispara el evento "click" --> preventDef');
+            console.log('se dispara el evento "click" --> preventDef\n-->' + ev.type);
             ev.preventDefault();
             p.innerHTML = 'se dispara el evento "click" --> preventDef';
         }
 
         function allowDrop(ev) {
-            // console.log('se dispara el evento "dragover" -> allowDrop');
+            console.log('se dispara el evento "dragover" -> allowDrop\n-->' + ev.type);
             ev.preventDefault();
             p.innerHTML = 'se dispara el evento "dragover" --> allowDrop';
         }
 
         function drag(ev) {
-            // console.log('se dispara el evento "drag" -> drag');
+            console.log('se dispara el evento "drag" -> drag\n-->' + ev.type);
             ev.dataTransfer.setData("text", ev.target.id);
             p.innerHTML = 'se dispara el evento "drag" --> drag';
         }
 
         function dragEnd(ev){
-            // console.log('se dispara el evento "dragend" -> dragEnd');
+            console.log('se dispara el evento "dragend" -> dragEnd\n-->' + ev.type);
             ev.dataTransfer.setData("text", ev.target.id);
             p.innerHTML = 'se dispara el evento "dragend" --> dragEnd';
         }
 
         function dragEnter(ev){
-            // console.log('se dispara el evento "dragenter" -> dragEnter');
+            console.log('se dispara el evento "dragenter" -> dragEnter\n-->' + ev.type);
             ev.dataTransfer.setData("text", ev.target.id);
             p.innerHTML = 'se dispara el evento "dragenter" --> dragEnter';
         }
 
         function dragLeave(ev){
-            // console.log('se dispara el evento "dragleave" -> dragLeave');
+            console.log('se dispara el evento "dragleave" -> dragLeave\n-->' + ev.type);
             ev.dataTransfer.setData("text", ev.target.id);
             p.innerHTML = 'se dispara el evento "dragleave" --> dragLeave';
         }
 
         function dragOver(ev){
-            // console.log('se dispara el evento "dragover" -> dragOver');
+            console.log('se dispara el evento "dragover" -> dragOver\n-->' + ev.type);
             ev.dataTransfer.setData("text", ev.target.id);
             p.innerHTML = 'se dispara el evento "dragleave" --> dragLeave';
         }
 
         function dragStart(ev){
-            // console.log('se dispara el evento "dragstart" -> dragStart');
+            console.log('se dispara el evento "dragstart" -> dragStart\n-->' + ev.type);
             ev.dataTransfer.setData("text", ev.target.id);
             p.innerHTML = 'se dispara el evento "dragstart" --> dragStart';
         }
 
         function drop(ev) {
-            // console.log('se dispara el evento "drop" -> drop');
+            console.log('se dispara el evento "drop" -> drop');
             ev.preventDefault();
             var data = ev.dataTransfer.getData("text");
             p.innerHTML = 'se dispara el evento "drop" --> drop';
             try{
                 ev.target.appendChild(document.getElementById(data));
             } catch(err){
+                // p.innerHTML = '*** La imagen se ha devuelto a su posición inicial.';
                 console.log(' *** La imagen se ha devuelto a su posición inicial.');
             }
         }
@@ -127,18 +119,7 @@
 </head>
 
 <body>
-<!--
-    <h2>Drag and Drop</h2>
-    <p>Drag the image back and forth between the two div elements.</p>
-    <div id="div1">
-        <img src="imagen.png" draggable="true" id="drag1" width="88" height="31">
-    </div>
-
-    <div id="div2"></div>
--->
-
-
-    <!-- W3SCHOOLS 
+    <!-- Referencia: W3SCHOOLS 
         <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
             <img src="imagen.png" draggable="true" ondragstart="drag(event)" id="drag1" width="88" height="31">
         </div>
