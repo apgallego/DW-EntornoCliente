@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .contenedor, .heading, .filter, div[id^='caja'], .elem, .etiqueta-borrar, .etiqueta-añadir, .elemento{
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+        .contenedor{
+            float: left;
+            margin: auto;
+        }
+        .contenedor *{margin: 5px;}
+        .etiqueta-añadir{background-color: lime; text-align: center;}
+        .heading{background-color: cyan; text-align: center;}
+        .etiqueta-borrar:hover{background-color: #999; text-align: center;}
+        .elem{background-color: bisque; text-align: center;}
+        #cajaCont{display: flex; flex-direction: column;}
+    </style>
+    <title>Drag and drop - alfredoPuertaDW2E</title>
+
+    <script>
+        //array con los contenedores o cajas principales (BOOKMARKS, CONTENIDO, ETIQUETAS)
+        var contenedores = [];
+
+        //los contenedores o cajas principales
+        var cajaBookmarks;
+        var cajaContenido;
+        var cajaEtiquetas;
+
+        //arrays de los botones de añadir y de borrar
+        var elemsAñadir = [];
+        var elemsBorrar = [];
+
+        //listas de elementos (etiquetas y bookmarks)
+        var etiquetas = [];
+        var bookmarks = [];
+        
+        //índices para bookmarks y etiquetas
+        var indexBM = 0, indexEt = 0;
+
+        //variable en la que se guarda el elemento que se está arrastrando
+        var elemSeleccionado;
+
+        function iniciar() {
+            cajaBookmarks = crearNodo('div', document.body, 'cajaBM', 'contenedor', '');
+                contenedores.push(cajaBookmarks);
+            cajaContenido = crearNodo('div', document.body, 'cajaCont', 'contenedor', '');
+                contenedores.push(cajaContenido);
+            cajaEtiquetas = crearNodo('div', document.body, 'cajaEtiquetas', 'contenedor', '');
+                contenedores.push(cajaEtiquetas);
+            
+            for (let i = 0; i < contenedores.length; i++) {
+                
+                // var heading = crearNodo('div', contenedores[i], 'heading' + (i + 1), 'heading', '');
+                if (i == 0) {
+                    var heading1 = crearNodo('div', contenedores[i], 'heading' + (i + 1), 'heading', 'BOOKMARKS');
+                    // heading.innerHTML = 'BOOKMARKS';
+                    var etAñadir1 = crearNodo('div', contenedores[i], 'añadir' + (i + 1), 'etiqueta-añadir', 'añadir +');
+                    var etBorrar1 = crearNodo('div', contenedores[i], 'borrar' + (i + 1), 'etiqueta-borrar', 'borrar drag and drop aqui');
+                } else if (i == 1) {
+                    var heading2 = crearNodo('div', contenedores[i], 'heading' + (i + 1), 'heading', 'CONTENIDO');
+                    // heading.innerHTML = 'CONTENIDO';
+                    var labelTitulo = crearNodo('label', contenedores[i], '', 'label', 'titulo');
+                    var titulo = crearNodo('input', contenedores[i], 'titulo', 'filter', '');
+                    titulo.setAttribute('type', 'text');
+                    
+                    var labelURL = crearNodo('label', contenedores[i], '', 'label', 'url');
+                    var url = crearNodo('input', contenedores[i], 'url', 'filter', '');
+                    url.setAttribute('type', 'text');
+                    
+                    var labelDescrip = crearNodo('label', contenedores[i], '', 'label', 'descrip');
+                    var descrip = crearNodo('input', contenedores[i], 'descrip', 'filter', '');
+                    descrip.setAttribute('type', 'text');
+                    
+                    var etBorrar2 = crearNodo('div', contenedores[i], 'borrar' + (i + 1), 'etiqueta-borrar', 'borrar drag and drop aqui');
+                    
+                } else {
+                    var heading3 = crearNodo('div', contenedores[i], 'heading' + (i + 1), 'heading', 'ETIQUETAS');
+                    // heading.innerHTML = 'ETIQUETAS';
+                    var etAñadir2 = crearNodo('div', contenedores[i], 'añadir' + (i + 1), 'etiqueta-añadir', 'añadir +');
+                    var etBorrar3 = crearNodo('div', contenedores[i], 'borrar' + (i + 1), 'etiqueta-borrar', 'borrar drag and drop aqui');   
+                }
+            }
+
+            //cajas principales (donde serán arrastradas las etiquetas)
+            // heading1.addEventListener("drop", drop);
+            // heading1.addEventListener("dragover", allowDrop);
+            
+            heading2.addEventListener("drop", drop);
+            heading2.addEventListener("dragover", allowDrop);
+            
+            // heading3.addEventListener("drop", drop);
+            // heading3.addEventListener("dragover", allowDrop);
+
+            //crear etiquetas pulsando en "añadir +"
+            etAñadir1.addEventListener("click", clickAñadir);
+            etAñadir1.addEventListener("mouseover", function(){
+                this.style.cursor = 'pointer';
+            });
+
+            etAñadir2.addEventListener("click", clickAñadir);
+            etAñadir2.addEventListener("mouseover", function(){
+                this.style.cursor = 'pointer';
+            });
+
+            //borrar las etiquetas creadas al pulsar en "borrar"
+            // etBorrar1.addEventListener("click", clickBorrar);
+            // etBorrar1.addEventListener("mouseover", function(){
+            //     this.style.cursor = 'pointer';
+            // }); 
+            
+            // etBorrar2.addEventListener("click", clickBorrar);
+            // etBorrar2.addEventListener("mouseover", function(){
+            //     this.style.cursor = 'pointer';
+            // });
+
+            // etBorrar3.addEventListener("click", clickBorrar);
+            // etBorrar3.addEventListener("mouseover", function(){
+            //     this.style.cursor = 'pointer';
+            // });
+
+            //borrar las etiquetas creadas al arrastrarlas en "borrar"
+            //añadir:
+            // - dragstart
+            // - drag
+            // - dragend
+            // - drop
+            etBorrar1.addEventListener("dragover", allowDrop);
+            // etBorrar1.addEventListener("drop", drop);
+            etBorrar1.addEventListener("drop", borrar);
+            // etBorrar1.addEventListener("drop", drag);
+
+            etBorrar2.addEventListener("dragover", allowDrop);
+            // etBorrar2.addEventListener("drop", drop);
+            etBorrar2.addEventListener("drop", borrar);
+            // etBorrar2.addEventListener("drop", drag);
+
+            etBorrar3.addEventListener("dragover", allowDrop);
+            // etBorrar3.addEventListener("drop", drop);
+            etBorrar3.addEventListener("drop", borrar);
+            // etBorrar3.addEventListener("drop", drag);
+        }
+
+        function clickAñadir(cajaBookmarks, cajaContenido, cajaEtiquetas, cajaBMs, cajaETs) {
+            var nodoPadre = this.parentElement;
+            if(nodoPadre.id === 'cajaBM'){
+                indexBM++;
+                var nuevaCajaBM = crearNodo('div', nodoPadre, 'bookmark' + indexBM, 'bookmark elem', 'bookmark ' + indexBM);
+                nodoPadre.insertBefore(nuevaCajaBM, document.getElementById('borrar1'));
+                nuevaCajaBM.setAttribute('draggable', 'true');
+                nuevaCajaBM.titulo = "";
+                nuevaCajaBM.url = "";
+                nuevaCajaBM.descrip = "";
+                nuevaCajaBM.etiquetas = [];
+
+                nuevaCajaBM.addEventListener("dragstart", drag);
+                nuevaCajaBM.addEventListener("mouseover", function(){this.style.cursor = 'pointer'});
+                nuevaCajaBM.addEventListener("click", clickBookmark);
+                bookmarks.push(nuevaCajaBM);
+
+                console.log(bookmarks);
+            } else if(nodoPadre.id === 'cajaEtiquetas'){
+                indexEt++;
+                // console.log(nuevaCajaBM);
+                var nuevaCajaEt = crearNodo('div', nodoPadre, 'etiqueta' + indexEt, 'etiqueta elem', 'etiqueta ' + indexEt);
+                nodoPadre.insertBefore(nuevaCajaEt, document.getElementById('borrar3'));
+                nuevaCajaEt.setAttribute('draggable', 'true');
+                nuevaCajaEt.addEventListener("mouseover", function(){this.style.cursor = 'pointer'});
+                nuevaCajaEt.addEventListener("dragstart", drag);
+                etiquetas.push(nuevaCajaEt);
+                console.log(etiquetas);
+            }
+        }
+
+        function clickBookmark(){
+            console.log('bookmark clickado');
+            console.log(this);
+
+            var newTitulo = document.getElementById('titulo');
+            var newURL= document.getElementById('url');
+            var newDescrip = document.getElementById('descrip');
+
+            newTitulo.value = this.titulo;
+            newURL.value = this.url;
+            newDescrip.value = this.descrip;
+
+            newTitulo.addEventListener("change", () => this.titulo = newTitulo.value);
+            newURL.addEventListener("change", () => this.url = newURL.value);
+            newDescrip.addEventListener("change", () => this.descrip = newDescrip.value);
+        }
+
+        /*no usar de momento*/
+        // function clickBorrar() {
+        //     try{
+        //         if(
+        //             this !== document.getElementById('borrar2')
+        //             && bookmarks.length != 0
+        //             && etiquetas.length != 0
+        //         ){
+        //             if(bookmarks.includes(this.previousSibling)){
+        //                 this.previousSibling.remove();
+        //             }
+        //             this.previousSibling.remove();
+        //             this.previousSibling.pop();
+        //             console.log(bookmarks)
+        //             console.log(etiquetas)
+        //         }
+        //     }catch{/*nada, solo capturamos la excepción*/}
+        // }
+
+        function allowDrop(ev) {
+            // console.log('se dispara el evento "dragover" -> allowDrop\n-->' + ev.type);
+            ev.preventDefault();
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            // console.log(ev.target);
+
+            // var data = ev.dataTransfer.getData("text");
+            // ev.target.appendChild(document.getElementById(data));
+
+            if(ev.target.id === 'heading2'){
+                console.log('heading2');
+                ev.target.addEventListener('drop', añadirAContenido);
+            } else {
+                console.log('otro');
+                ev.target.addEventListener('drop', borrar);
+            }
+        }
+
+        function drag(ev){
+            // console.log(ev.target);
+            // console.log('paso por drag');
+            elemSeleccionado = ev.target;
+        }
+
+        function borrar(){
+            elemSeleccionado.remove();
+            
+            // if(document.getElementById('descrip').nextSibling && document.getElementById('descrip').nextSibling !== document.getElementById('borrar2')){
+            //     document.getElementById('descrip').nextSibling.remove();
+            // }
+
+            // console.log(bookmarks);
+            // console.log('-------------------');
+            // console.log(etiquetas);
+        }
+
+        function añadirAContenido(){
+            // console.log('paso por cambiarContenedor');
+            // console.log(this);
+            if(etiquetas.includes(elemSeleccionado)){
+                console.log('etiqueta');
+                var nuevaEtiqueta = elemSeleccionado.cloneNode(true);
+                nuevaEtiqueta.addEventListener('drag', drag);
+                this.parentNode.insertBefore(nuevaEtiqueta, document.getElementById('borrar2'));
+            }
+        }
+
+
+        function crearNodo(tipo, padre, id, clase, inner) {
+            var nodo = document.createElement(tipo);
+            if (id != '') { nodo.id = id; }
+            if (clase != '') { nodo.className = clase; }
+            if (inner != '') { nodo.innerHTML = inner; }
+            padre.appendChild(nodo);
+            return nodo;
+        }
+
+        window.onload = iniciar;
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
