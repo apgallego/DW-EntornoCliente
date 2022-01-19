@@ -21,7 +21,10 @@
             var div1 = crearNodo('div', document.body, 'div1', '');
             var div2 = crearNodo('div', document.body, 'div2', '');
             var img = crearNodo('img', div1, 'drag1', '');
-            img.setAttribute('src', 'Willyrex.png');
+
+            // !!!! IMPORTANTE: añadir una imagen externa, si no no funciona correctamente.
+            img.setAttribute('src', 'imagen.png');
+            img.setAttribute('alt', 'imagen cualquiera');
             img.setAttribute('width', '88');
             img.setAttribute('height', '31');
 

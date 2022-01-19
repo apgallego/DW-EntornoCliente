@@ -10,40 +10,26 @@
     <title>Drag and drop - alfredoPuertaDW2E</title>
 
     <script>
-        //array con los contenedores o cajas principales (BOOKMARKS, CONTENIDO, ETIQUETAS)
         var contenedores = [];
-
-        //los contenedores o cajas principales
-        var cajaBookmarks;
-        var cajaContenido;
-        var cajaEtiquetas;
-
-        //arrays de los botones de añadir y de borrar
+        //botones
         var elemsAñadir = [];
         var elemsBorrar = [];
 
-        //listas de elementos HTML (etiquetas y bookmarks)
         var etiquetas = [];
         var bookmarks = [];
-        
-        //listas de los datos de las diferentes etiquetas y bookmarks
-        //(se enlaza a los elementos HTML por medio de los índices de las listas)
-        var etiquetasDatos = [];
-        var bookmarksDatos = [];
 
-        //índices para bookmarks y etiquetas
         var indexBM = 0, indexEt = 0;
 
-        //variable en la que se guarda el elemento que se está arrastrando
         var elemSeleccionado;
 
         function iniciar() {
-            cajaBookmarks = crearNodo('div', document.body, 'cajaBM', 'contenedor', '');
+            var cajaBookmarks = crearNodo('div', document.body, 'cajaBM', 'contenedor', '');
                 contenedores.push(cajaBookmarks);
-            cajaContenido = crearNodo('div', document.body, 'cajaCont', 'contenedor', '');
+            var cajaContenido = crearNodo('div', document.body, 'cajaCont', 'contenedor', '');
                 contenedores.push(cajaContenido);
-            cajaEtiquetas = crearNodo('div', document.body, 'cajaEtiquetas', 'contenedor', '');
+            var cajaEtiquetas = crearNodo('div', document.body, 'cajaEtiquetas', 'contenedor', '');
                 contenedores.push(cajaEtiquetas);
+            // crearElementosFuncionales(cajaBookmarks, cajaContenido, cajaEtiquetas);
             
             for (let i = 0; i < contenedores.length; i++) {
                 
@@ -58,16 +44,12 @@
                     // heading.innerHTML = 'CONTENIDO';
                     var labelTitulo = crearNodo('label', contenedores[i], '', 'label', 'titulo');
                     var titulo = crearNodo('input', contenedores[i], 'titulo', 'filter', '');
-                    titulo.setAttribute('type', 'text');
                     
                     var labelURL = crearNodo('label', contenedores[i], '', 'label', 'url');
                     var url = crearNodo('input', contenedores[i], 'url', 'filter', '');
-                    url.setAttribute('type', 'text');
                     
                     var labelDescrip = crearNodo('label', contenedores[i], '', 'label', 'descrip');
-                    var descrip = crearNodo('input', contenedores[i], 'descrip', 'filter', '');
-                    descrip.setAttribute('type', 'text');
-                    
+                    var descrip = crearNodo('input', contenedores[i], 'descripcion', 'filter', '');
                     var etBorrar2 = crearNodo('div', contenedores[i], 'borrar' + (i + 1), 'etiqueta-borrar', 'borrar drag and drop aqui');
                     
                 } else {
@@ -100,20 +82,20 @@
             });
 
             //borrar las etiquetas creadas al pulsar en "borrar"
-            // etBorrar1.addEventListener("click", clickBorrar);
-            // etBorrar1.addEventListener("mouseover", function(){
-            //     this.style.cursor = 'pointer';
-            // }); 
+            etBorrar1.addEventListener("click", clickBorrar);
+            etBorrar1.addEventListener("mouseover", function(){
+                this.style.cursor = 'pointer';
+            }); 
             
-            // etBorrar2.addEventListener("click", clickBorrar);
-            // etBorrar2.addEventListener("mouseover", function(){
-            //     this.style.cursor = 'pointer';
-            // });
+            etBorrar2.addEventListener("click", clickBorrar);
+            etBorrar2.addEventListener("mouseover", function(){
+                this.style.cursor = 'pointer';
+            });
 
-            // etBorrar3.addEventListener("click", clickBorrar);
-            // etBorrar3.addEventListener("mouseover", function(){
-            //     this.style.cursor = 'pointer';
-            // });
+            etBorrar3.addEventListener("click", clickBorrar);
+            etBorrar3.addEventListener("mouseover", function(){
+                this.style.cursor = 'pointer';
+            });
 
             //borrar las etiquetas creadas al arrastrarlas en "borrar"
             //añadir:
@@ -140,63 +122,25 @@
         function clickAñadir(cajaBookmarks, cajaContenido, cajaEtiquetas, cajaBMs, cajaETs) {
             var nodoPadre = this.parentElement;
             if(nodoPadre.id === 'cajaBM'){
-                var nuevaCajaBM = crearNodo('div', nodoPadre, 'bookmark' + indexBM++, 'bookmark elem', 'bookmark ' + indexBM);
-                nodoPadre.insertBefore(nuevaCajaBM, document.getElementById('borrar1'));
+                var nuevaCajaBM = crearNodo('div', nodoPadre, 'etiqueta' + indexBM++, 'etiqueta', 'bookmark ' + indexBM);
                 nuevaCajaBM.setAttribute('draggable', 'true');
                 nuevaCajaBM.addEventListener("dragstart", drag);
-                nuevaCajaBM.addEventListener("mouseover", function(){this.style.cursor = 'pointer'});
-                nuevaCajaBM.addEventListener("click", clickBookmark);
                 bookmarks.push(nuevaCajaBM);
-                console.log(bookmarks);
+                // console.log(nuevaCajaBM);
             } else if(nodoPadre.id === 'cajaEtiquetas'){
                 // console.log(nuevaCajaBM);
-                var nuevaCajaEt = crearNodo('div', nodoPadre, 'etiqueta' + indexEt++, 'etiqueta elem', 'etiqueta ' + indexEt);
-                nodoPadre.insertBefore(nuevaCajaEt, document.getElementById('borrar3'));
+                var nuevaCajaEt = crearNodo('div', nodoPadre, 'etiqueta' + indexEt++, 'etiqueta', 'etiqueta ' + indexEt);
                 nuevaCajaEt.setAttribute('draggable', 'true');
-                nuevaCajaEt.addEventListener("mouseover", function(){this.style.cursor = 'pointer'});
                 nuevaCajaEt.addEventListener("dragstart", drag);
                 etiquetas.push(nuevaCajaEt);
-                console.log(etiquetas);
             }
         }
 
-        function clickBookmark(){
-            console.log('bookmark clickado');
-            var bmDatos = {
-                    titulo:"",
-                    url:"",
-                    descrip:"",
-                    etiquetas:[]
-                }
-            bmDatos.titulo = document.getElementById('titulo').value;
-            bmDatos.url = document.getElementById('url').value;
-            bmDatos.descrip = document.getElementById('descrip').value;
-            bookmarksDatos.push(bmDatos);
-
-            // function setTitulo(tit){document.getElementById('titulo').value = tit;}
-            // function setURL(url){document.getElementById('url').value = url;}
-            // function setDescrip(descrip){document.getElementById('descrip').value = descrip;}
-            // function setEtiquetas(){}
+        function clickBorrar() {
+            try{
+                this.nextSibling.remove();
+            }catch (err){/*nada aquí*/}
         }
-
-        /*no usar de momento*/
-        // function clickBorrar() {
-        //     try{
-        //         if(
-        //             this !== document.getElementById('borrar2')
-        //             && bookmarks.length != 0
-        //             && etiquetas.length != 0
-        //         ){
-        //             if(bookmarks.includes(this.previousSibling)){
-        //                 this.previousSibling.remove();
-        //             }
-        //             this.previousSibling.remove();
-        //             this.previousSibling.pop();
-        //             console.log(bookmarks)
-        //             console.log(etiquetas)
-        //         }
-        //     }catch{/*nada, solo capturamos la excepción*/}
-        // }
 
         function allowDrop(ev) {
             // console.log('se dispara el evento "dragover" -> allowDrop\n-->' + ev.type);
@@ -211,10 +155,10 @@
             // ev.target.appendChild(document.getElementById(data));
 
             if(ev.target.id === 'heading2'){
-                console.log('heading2');
-                ev.target.addEventListener('drop', añadirAContenido);
+                // console.log('heading2');
+                ev.target.addEventListener('drop', cambiarContenedor);
             } else {
-                console.log('otro');
+                // console.log('otro');
                 ev.target.addEventListener('drop', borrar);
             }
         }
@@ -227,21 +171,15 @@
 
         function borrar(){
             elemSeleccionado.remove();
-            // console.log(bookmarks);
-            // console.log('-------------------');
-            // console.log(etiquetas);
+            // ev.target.remove();
         }
 
-        function añadirAContenido(){
+        function cambiarContenedor(){
             // console.log('paso por cambiarContenedor');
             // console.log(this);
-            if(etiquetas.includes(elemSeleccionado)){
-                console.log('etiqueta');
-                var nuevaEtiqueta = elemSeleccionado.cloneNode(true);
-                this.parentNode.insertBefore(nuevaEtiqueta, document.getElementById('borrar2'));
-            }
+            this.parentNode.appendChild(elemSeleccionado);
+            // console.log(elemSeleccionado.parentNode);
         }
-
 
         function crearNodo(tipo, padre, id, clase, inner) {
             var nodo = document.createElement(tipo);
