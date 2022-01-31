@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>IMAGENES - alfredoPuertaDW2E</title>
+        <style>
+            .main-container{
+                margin: auto;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
+                border: 1px solid black;
+                width: 1000px;
+            }
+
+            .container{
+                border: 1px solid black;
+            }
+
+            .frame{
+                border: 3px solid red;
+                width: fit-content;
+            }
+        </style>
+        <script>
+            const APIKey = 'b_YjDeRiNzvDiaMB2Za0vA';
+            var mainContainer;
+            var json;
+            var imgs = [];
+            var enfoque = 0;
+
+            function iniciar(){
+                mainContainer = crearNodo('div', document.body, 'main-container', 'main-container container', '');
+                
+                loadDoc();
+                setTimeout(crearParrilla, 2000);
+                setTimeout(interaccion, 2500);
+
+                document.addEventListener('keydown', ev => interaccion(ev));
+            }
+
+            function crearParrilla(){
+                if(json){
+                    let i = 0;
+                    for(const pic in json){
+                        var frame = crearNodo('div', mainContainer, 'frame' + (i + 1), 'frame container', '');
+                        var imagen = crearNodo('img', frame, 'imagen' + (i + 1), 'imagen', '');
+                        var newSrc = json.faces[i].urls[2][128];
+                        // console.log(newSrc);
+                        imagen.src = newSrc;
+                        frame.onfocus = function(ev){enfocar(ev);};
+                        // frame.addEventListener('focus', ev => enfocar(ev));
+                        // frame.addEventListener('focus', function(ev){
+                        //     console.log(' -- paso por enfocar');
+                        //     ev.target.style.width = '50px';
+                        //     ev.target.style.border = '2px solid blue';
+                        //     ev.target.style.borderRadius = '3px';
+                        //     ev.target.style.borderBox = '1px 1px 3px black';
+                        // });
+                        imgs.push(frame);
+                        console.log(':: i: ' + i);
+                        i++;
+                    }
+                } else {
+                    console.log('Algo salió mal.');
+                }
+            } 
+
+            function loadDoc(){
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        // json = xmlhttp.responseText;
+                        json = JSON.parse(xmlhttp.responseText);
+                        enfoque = 0;
+                        console.log(json);
+                    }
+                };
+                xmlhttp.open("GET", 'https://api.generated.photos/api/v1/faces?api_key=' + APIKey, true);
+                xmlhttp.send();
+            }
+
+            function enfocar(ev){
+                console.log(' -- paso por enfocar');
+                ev.target.style.width = '50px';
+                ev.target.style.border = '2px solid blue';
+                ev.target.style.borderRadius = '3px';
+                ev.target.style.borderBox = '1px 1px 3px black';
+            }
+
+            function interaccion(ev){
+                // var imgs = document.getElementsByClassName('frame');
+                // console.log(imgs);
+                // console.log(imgs[0]);
+            
+                /*con las flechas del teclado*/
+                switch(ev.key){
+                    /*suponiendo un tablero de 10 filas de 5*/
+                    // case 'w':
+                    // case 'W':
+                    case 'ArrowUp':
+                        enfoque += 5;
+                        console.log('pulso flecha arriba :: enfoque -> ' + enfoque);
+                        imgs[i].focus();
+                        break;
+                    // case 'a': 
+                    // case 'A': 
+                    case 'ArrowLeft':
+                        enfoque -= 1;
+                        console.log('pulso flecha izq :: enfoque -> ' + enfoque);
+                        imgs[enfoque].focus();
+                        break;
+                    // case 's': 
+                    // case 'S': 
+                    case 'ArrowDown':
+                        enfoque -= 5;
+                        console.log('pulso flecha abajo :: enfoque -> ' + enfoque);
+                        imgs[enfoque].focus();
+                        break;
+                    // case 'd': 
+                    // case 'D': 
+                    case 'ArrowRight':
+                        enfoque += 1;
+                        console.log('pulso flecha der :: enfoque -> ' + enfoque);
+                        imgs[enfoque].focus();
+                        break;
+                }
+            }
+
+            function crearNodo(tipo, padre, id, clase, inner){
+                var nodo = document.createElement(tipo);
+                if(id != '') nodo.id = id;
+                if(clase != '') nodo.className = clase;
+                if(inner != '') nodo.innerHTML = inner;
+                padre.appendChild(nodo);
+                return nodo;
+            }
+
+            window.onload = iniciar;
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

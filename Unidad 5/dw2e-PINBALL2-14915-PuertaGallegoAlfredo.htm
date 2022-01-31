@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PINBALL2 - alfredoPuertaDW2E</title>
+    <style>
+        .main-container{
+            margin: auto;
+            width: 800px;
+            height: 500px;
+            border: 3px dotted black;
+            background-color: lightgrey;
+        }
+
+        .globo{
+            /* position: relative; */
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: 1px solid black;
+            border-radius: 50%;
+        }
+
+        .contador{
+            margin: auto;
+            border: 3px solid black;
+            border-radius: 50px;
+            width: 200px;
+            height: 20px;
+            background-color: lime;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+    </style>
+    <script>
+        var mainContainer;
+        var globos = [];
+        var numGlobos = 3;
+        var contadorDiv;
+        var contador = 0;
+        var intervalo;
+
+        function main(){
+            mainContainer = crearNodo('div', document.body, '', 'main-container', '');
+            for(let i = 0; i < numGlobos; i++){
+                var globo = crearNodo('div', mainContainer, 'globo' + (i + 1), 'globo', '');
+                globo.innerHTML = globo.id.substr(5, globo.id.length);
+                globo.style.width = numRandom(30, 60) + 'px';
+                globo.style.height = globo.style.width;
+                globo.style.position = 'absolute';
+                globo.style.top = numRandom(10, 440) + 'px';
+                globo.style.left = numRandom(250, 840) + 'px';
+                globo.style.backgroundColor = 'rgb(' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ')';
+                globo.style.opacity = '0.8';
+                globo.style.transition = 'top 1s, left 1s, background-color 1s'
+                globo.addEventListener('mouseover', ratonEncima);
+                globo.addEventListener('mouseout', ratonFuera);
+                globo.addEventListener('click', clickGlobo);
+                globos.push(globo);
+            }
+
+            intervalo = setInterval(cambiarPosicion, 5000)
+            contadorDiv = crearNodo('div', document.body, 'contador', 'contador', 'Globos explotados: ' + contador);
+        }
+
+        function ratonEncima(){
+            this.style.cursor = 'crosshair';
+            this.innerHTML = '';
+            this.style.backgroundImage = `repeating-radial-gradient(circle,
+                #FF0000 0px,
+                #FF0000 2px,
+                #FFFFFF 2px,
+                #FFFFFF 4px,
+                #FF0000 4px,
+                #FF0000 6px,
+                #FFFFFF 6px
+                )`;
+        }
+
+        function ratonFuera(){
+            this.style.backgroundImage = '';
+            this.innerHTML = this.id.substr(5, this.id.length);
+        }
+
+        function clickGlobo(){
+            this.parentNode.removeChild(this);
+            contador++;
+            contadorDiv.innerHTML = 'Globos explotados: ' + contador;
+
+            if(contador == globos.length){
+                // console.log('todos los globos han sido explotados');
+                clearInterval(intervalo);
+                mainContainer.innerHTML = 'Has ganado!';
+                mainContainer.style.textAlign = 'center';
+            }
+        }
+
+        function cambiarPosicion(){
+            console.log('paso por cambiarPosicion');
+            // console.log(globos);
+            for(let i = 0; i < globos.length; i++){
+                globos[i].style.top = numRandom(10, 440) + 'px';
+                globos[i].style.left = numRandom(250, 840) + 'px';
+                globos[i].style.backgroundColor = 'rgb(' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ')';
+                globos[i].style.backgroundColor = 'rgb(' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ')';
+                // globos[i].style.transition = 'top 1s, left 1s, background-color 1s'
+            }
+        }
+
+        function crearNodo(tipo, padre, id, clase, inner){
+            var nodo = document.createElement(tipo);
+            if(id != '') nodo.id = id;
+            if(clase != '') nodo.className = clase;
+            if(inner != '') nodo.innerHTML = inner;
+            padre.appendChild(nodo);
+            return nodo;
+        }
+
+        function numRandom(min, max){
+			return Math.floor(Math.random() * (max - min) + min);
+		}
+
+        window.onload = main;
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
