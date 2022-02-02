@@ -6,9 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PINBALL2 - alfredoPuertaDW2E</title>
     <style>
-        *{font-family: Arial, Helvetica, sans-serif;}
+        *{
+            /* margin: 0; */
+            /* padding: 0; */
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
         .main-container{
-            margin: auto;
+            /* margin: auto; */
             width: 800px;
             height: 500px;
             border: 3px dashed black;
@@ -21,14 +26,14 @@
 
         .globo{
             /* position: relative; */
-            margin: auto;
+            /* margin: auto; */
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
             font-size: 16px;
             border: 1px solid black;
-            border-radius: 50%;
+            border-radius: 100%;
         }
 
         .globo:hover{
@@ -42,7 +47,7 @@
                 #FF0000 4px,
                 #FF0000 6px,
                 #FFFFFF 6px
-                );
+            );
         }
 
         .contador, .parar, .reset{
@@ -56,13 +61,12 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            font-weight: bold;
         }
-
-        .contador{font-weight: bold;}
 
         .container{
             /* border: 1px solid black; */
-            margin: auto;
+            /* margin: auto; */
             margin-top: 10px;
             width: 800px;
             display: flex;
@@ -71,69 +75,54 @@
     </style>
     <script>
         var mainContainer;
+        var audioExplotarGlobo, audioGanarPartida, srcExplotarGlobo, srcGanarPartida;
         var globos = [];
-        var numGlobos = 30;
+        var numGlobos = 5;
         var contenedorOpciones;
         var pararBoton, parado = false, resetBoton, contadorDiv, contador = 0;
-        var intervalo;
+        var intervalos = [];
 
         function main(){
             mainContainer = crearNodo('div', document.body, '', 'main-container', '');
+            audioExplotarGlobo = crearNodo('audio', document.body, '', 'audio', '');
+                srcExplotarGlobo = crearNodo('source', audioExplotarGlobo);
+                    srcExplotarGlobo.src = 'gunshot.mp3';
+                    srcExplotarGlobo.type = 'audio/ogg';
+            audioGanarPartida = crearNodo('audio', document.body, '', 'audio', '');
+                srcGanarPartida = crearNodo('source', audioGanarPartida, '', 'audio', '');
+                    srcGanarPartida.src = 'mario_win.mp3';
+                    srcGanarPartida.type = 'audio/ogg';
+            
             for(let i = 0; i < numGlobos; i++){
                 var globo = crearNodo('div', mainContainer, 'globo' + (i + 1), 'globo', '');
-                /*quito el innerHTML por error con el hover (???)*/
-                // globo.innerHTML = globo.id.substr(5, globo.id.length);
-                globo.style.width = numRandom(30, 60) + 'px';
-                globo.style.height = globo.style.width;
-                globo.style.position = 'absolute';
-                globo.style.top = numRandom(10, 440) + 'px';
-                globo.style.left = numRandom(200, 820) + 'px';
-                globo.style.backgroundColor = 'rgb(' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ')';
-                globo.style.opacity = '0.8';
-                globo.style.transition = 'top 1s, left 1s, background-color 1s';
-                // globo.addEventListener('mouseenter', ratonEncima);
-                // globo.addEventListener('mouseout', ratonFuera);
-                globo.addEventListener('mouseover', function(){this.innerHTML = '';});
-                // globo.addEventListener('mouseout', function(){
-                //     this.style.backgroundImage = '';
-                //     this.innerHTML = this.id.substr(5, this.id.length);
-                // });
-                globo.addEventListener('click', clickGlobo);
-                intervalo = setInterval(cambiarPosicion, numRandom(500, 3000), globo);
+                    /*quito el innerHTML por error con el hover (???)*/
+                    // globo.innerHTML = globo.id.substr(5, globo.id.length);
+                    globo.style.width = numRandom(30, 60) + 'px';
+                    globo.style.height = globo.style.width;
+                    globo.style.position = 'absolute';
+                    globo.style.top = numRandom(10, 440) + 'px';
+                    globo.style.left = numRandom(10, 700) + 'px';
+                    globo.style.backgroundColor = 'rgb(' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ')';
+                    globo.style.opacity = '0.8';
+                    globo.style.transition = 'top 1s, left 1s, background-color 1s';
+                    globo.addEventListener('mouseover', function(){this.innerHTML = '';});
+                    globo.addEventListener('click', clickGlobo);
+                var intervalo = setInterval(cambiarPosicion, numRandom(500, 3000), globo);
+                intervalos.push(intervalo);
                 globos.push(globo);
             }
-            
 
             contenedorOpciones = crearNodo('div', document.body, '', 'container', '');
             pararBoton = crearNodo('div', contenedorOpciones, 'parar', 'parar', ' - PARAR - ');
-            pararBoton.addEventListener('mouseenter', ratonEncimaOpcion);
-            pararBoton.addEventListener('mouseout', function(){this.style.backgroundColor = 'lime';});
-            pararBoton.addEventListener('click', parar);
+                pararBoton.addEventListener('mouseenter', ratonEncimaOpcion);
+                pararBoton.addEventListener('mouseout', function(){this.style.backgroundColor = 'lime';});
+                pararBoton.addEventListener('click', parar);
             contadorDiv = crearNodo('div', contenedorOpciones, 'contador', 'contador', 'Puntuación: ' + contador);
             resetBoton = crearNodo('div', contenedorOpciones, 'reset', 'reset', ' - RESET - ');
-            resetBoton.addEventListener('mouseenter', ratonEncimaOpcion);
-            resetBoton.addEventListener('mouseout', function(){this.style.backgroundColor = 'lime';});
-            resetBoton.addEventListener('click', reset);
+                resetBoton.addEventListener('mouseenter', ratonEncimaOpcion);
+                resetBoton.addEventListener('mouseout', function(){this.style.backgroundColor = 'lime';});
+                resetBoton.addEventListener('click', reset);
         }
-
-        // function ratonEncima(){
-        //     this.style.cursor = 'crosshair';
-        //     this.innerHTML = '';
-        //     this.style.backgroundImage = `repeating-radial-gradient(circle,
-        //         #FF0000 0px,
-        //         #FF0000 2px,
-        //         #FFFFFF 2px,
-        //         #FFFFFF 4px,
-        //         #FF0000 4px,
-        //         #FF0000 6px,
-        //         #FFFFFF 6px
-        //         )`;
-        // }
-
-        // function ratonFuera(){
-        //     this.style.backgroundImage = '';
-        //     this.innerHTML = this.id.substr(5, this.id.length);
-        // }
 
         function ratonEncimaOpcion(){
             this.style.cursor = 'pointer';
@@ -141,55 +130,61 @@
         }
 
         function clickGlobo(){
-            this.parentNode.removeChild(this);
-            contador++;
-            contadorDiv.innerHTML = 'Puntuación: ' + contador;
-
-            if(contador == globos.length){
-                // console.log('todos los globos han sido explotados');
-                clearInterval(intervalo);
-                mainContainer.innerHTML = 'Has ganado!';
-                mainContainer.style.textAlign = 'center';
+            if(!parado){
+                this.parentNode.removeChild(this);
+                audioExplotarGlobo.load();
+                audioExplotarGlobo.play();
+                contador++;
+                contadorDiv.innerHTML = 'Puntuación: ' + contador;
+                
+                if(contador == globos.length){
+                    // console.log('todos los globos han sido explotados');
+                    for(let i = 0; i < intervalos.length; i++){
+                        clearInterval(intervalos[i]);
+                    }
+                    audioGanarPartida.load();
+                    audioGanarPartida.play();
+                    mainContainer.innerHTML = 'Has ganado!';
+                    mainContainer.style.textAlign = 'center';
+                }
+            } else {
+                console.log('no se puede clickar los globos, el juego está parado.');
             }
         }
-
+        
         function parar(){
             console.log(parado);
             if(!parado){
-                clearInterval(intervalo);
+                for(let i = 0; i < intervalos.length; i++){
+                    clearInterval(intervalos[i]);
+                }
                 parado = true;
                 console.log('el juego se ha parado');
             } else {
-                intervalo = setInterval(cambiarPosicion, numRandom(500, 3000));
+                for(let i = 0; i < intervalos.length; i++){
+                    var intervalo = setInterval(cambiarPosicion, numRandom(200, 3000), globos[i]);
+                }
                 parado = false;
                 console.log('el juego se ha reanudado');
             }
         }
-
+        
         function reset(){
             console.log('el juego se ha reiniciado');
-            clearInterval(intervalo);
+            /*opcional, no afecta al programa como tal*/
+            for(let i = 0; i < intervalos.length; i++){
+                clearInterval(intervalos[i]);
+            }
             mainContainer.innerHTML = 'Reiniciando partida...';
             setInterval(() => location.reload(), 1000);
         }
-
+        
         function cambiarPosicion(globo){
             console.log('paso por cambiarPosicion');
             globo.style.top = numRandom(10, 440) + 'px';
-            globo.style.left = numRandom(200, 840) + 'px';
+            globo.style.left = numRandom(10, 700) + 'px';
             globo.style.backgroundColor = 'rgb(' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ')';
         }
-
-        // function cambiarPosicion(){
-        //     console.log('paso por cambiarPosicion');
-        //     // console.log(globos);
-        //     for(let i = 0; i < globos.length; i++){
-        //         globos[i].style.top = numRandom(10, 440) + 'px';
-        //         globos[i].style.left = numRandom(200, 840) + 'px';
-        //         globos[i].style.backgroundColor = 'rgb(' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ', ' + numRandom(0, 255) + ')';
-        //         // globos[i].style.transition = 'top 1s, left 1s, background-color 1s'
-        //     }
-        // }
 
         function crearNodo(tipo, padre, id, clase, inner){
             var nodo = document.createElement(tipo);
